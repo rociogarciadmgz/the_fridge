@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi CV Interactivo</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background: var(--light);
+            color: var(--dark);
+        }
+        header {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: -50px auto 20px;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h2 {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+            color: var(--primary);
+        }
+        .skill-tag {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            transition: transform 0.3s;
+        }
+        .skill-tag:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: white;
+        }
+        .contact-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Tu Nombre Aquí</h1>
+    <p>Tu Profesión o Especialidad</p>
+</header>
+
+<div class="container">
+    <section>
+        <h2>Sobre mí</h2>
+        <p>Hola, soy un profesional apasionado por... (Aquí irá tu descripción).</p>
+    </section>
+
+    <section>
+        <h2>Habilidades</h2>
+        <div id="skills">
+            <span class="skill-tag">Liderazgo</span>
+            <span class="skill-tag">Resolución de problemas</span>
+            <span class="skill-tag">Tecnología</span>
+        </div>
+    </section>
+
+    <section>
+        <h2>Contacto</h2>
+        <p>¿Te interesa mi perfil? ¡Hablemos!</p>
+        <a href="mailto:tu@correo.com" class="contact-btn">Enviar Correo</a>
+    </section>
+</div>
+
+</body>
+</html>
