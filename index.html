@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" href="logo.png">
     <link rel="icon" type="image/png" href="logo.png">
     <meta name="theme-color" content="#000000">
-    <title>The Fridge</title>
+    <title>The Fridge - Familia García Domínguez</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -365,7 +365,14 @@
         const db = getFirestore(app);
         const familyDocRef = doc(db, "hogar", "datos_compartidos");
 
-        // Identificador único de este dispositivo
+        // Registrar Service Worker al inicio
+        let swRegistration = null;
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./firebase-messaging-sw.js')
+                .then(reg => { swRegistration = reg; })
+                .catch(() => {});
+        }
+
         let myDeviceId = localStorage.getItem('the_fridge_device_id');
         if (!myDeviceId) {
             myDeviceId = 'dev_' + Math.random().toString(36).substring(2, 9);
@@ -407,12 +414,10 @@
             }
         };
 
-        // Escuchar actualizaciones de la familia en tiempo real
         onSnapshot(familyDocRef, (docSnap) => {
             if (docSnap.exists()) {
                 const cloudData = docSnap.data();
 
-                // Notificar SOLO si el cambio lo hizo otro móvil
                 if (!isInitialLoad && cloudData.lastAlert) {
                     const isNewAlert = cloudData.lastAlert.time > lastHandledAlertTime;
                     const fromOtherDevice = cloudData.lastAlert.sender !== myDeviceId;
@@ -443,19 +448,27 @@
         function triggerSystemPush(body) {
             showToast("The Fridge", body);
             if (Notification.permission === 'granted') {
-                try {
-                    new Notification("The Fridge", {
+                if (swRegistration && swRegistration.showNotification) {
+                    swRegistration.showNotification("The Fridge", {
                         body: body,
                         icon: 'logo.png',
-                        badge: 'logo.png'
+                        badge: 'logo.png',
+                        tag: 'the-fridge-update'
                     });
-                } catch(e) {}
+                } else {
+                    try {
+                        new Notification("The Fridge", {
+                            body: body,
+                            icon: 'logo.png'
+                        });
+                    } catch(e) {}
+                }
             }
         }
 
         window.requestNotificationPermission = async function() {
             if (!('Notification' in window)) {
-                showToast("Aviso", "Añade la web a la pantalla de inicio.");
+                showToast("Aviso", "Añade la app a la pantalla de inicio primero.");
                 return;
             }
 
@@ -470,10 +483,10 @@
                         bellBtn.classList.add('bg-brand/20', 'border-brand', 'text-brand');
                         bellBtn.classList.remove('bg-slate-800', 'border-slate-700', 'text-brand-light');
                     }
-                    showToast("🔔 Activadas", "Recibirás avisos cuando otros cambien cosas.");
+                    showToast("🔔 Activadas", "Avisos activados para este dispositivo.");
                 } else {
                     if (dot) dot.classList.add('hidden');
-                    showToast("Aviso", "Permiso denegado.");
+                    showToast("Aviso", "Permiso de notificaciones denegado.");
                 }
             } catch (err) {
                 console.error(err);
@@ -636,7 +649,7 @@
             window.persistData();
         };
 
-        // --- CONSUMIR PRONTO ---
+        // --- CADUCIDAD ---
         window.renderExpiringList = function() {
             const container = document.getElementById('expiring-list-container');
             if (!container) return;
