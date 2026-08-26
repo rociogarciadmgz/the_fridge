@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Configuración PWA -->
+    <!-- Configuración PWA e Iconos con tu nuevo Logo -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="The Fridge">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3724/3724788.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
     <meta name="theme-color" content="#000000">
-    <title>The Fridge</title>
+    <title>The Fridge - Familia García Domínguez</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,24 +47,40 @@
         }
     </script>
     <style>
-        .no-select { -webkit-tap-highlight-color: transparent; user-select: none; }
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .no-select {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="h-full font-sans antialiased text-slate-900 flex flex-col no-select bg-slate-50">
 
-    <!-- CABECERA -->
+    <!-- CABECERA DE LA APP CON EL LOGO -->
     <header class="bg-black text-white shadow-md sticky top-0 z-40 border-b border-slate-900">
         <div class="max-w-md mx-auto px-5 py-3.5 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="bg-brand text-white p-2 rounded-xl shadow-md">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                </div>
+                <img src="logo.png" alt="The Fridge Logo" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-slate-700">
                 <div>
                     <h1 class="font-title font-bold text-sm leading-tight tracking-tight">The Fridge</h1>
-                    <p class="text-[9px] text-slate-400 font-medium tracking-widest uppercase">Sistema Familiar v4.0</p>
+                    <p class="text-[9px] text-slate-400 font-medium tracking-widest uppercase">Familia García Domínguez</p>
                 </div>
             </div>
             
@@ -74,13 +91,14 @@
         </div>
     </header>
 
-    <!-- TOAST -->
+    <!-- TOAST DE NOTIFICACIONES INTERNAS -->
     <div id="toast" class="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-sm bg-black text-white rounded-xl p-4 shadow-2xl flex items-start space-x-3 transition-all duration-300 translate-y-[-150%] opacity-0 pointer-events-none border border-slate-800">
-        <div class="bg-brand text-white p-2 rounded-lg mt-0.5">ℹ️</div>
+        <div class="bg-brand text-white p-2 rounded-lg mt-0.5" id="toast-icon">ℹ️</div>
         <div class="flex-1">
             <h4 class="font-title font-bold text-xs text-brand-light uppercase tracking-wider" id="toast-title">Aviso</h4>
             <p class="text-xs text-slate-300 mt-1" id="toast-message">Mensaje</p>
         </div>
+        <button onclick="hideToast()" class="text-slate-400 hover:text-white p-1">✕</button>
     </div>
 
     <!-- CONTENIDO PRINCIPAL -->
@@ -94,7 +112,7 @@
                 </div>
                 <div>
                     <h2 class="font-title font-extrabold text-base text-slate-900 leading-tight">Menú Semanal</h2>
-                    <p class="text-[10px] text-slate-500 mt-0.5">Planificación de Comida (☀️) y Cena (🌙)</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">Planificación con Comida (☀️) y Cena (🌙)</p>
                 </div>
             </div>
 
@@ -103,72 +121,72 @@
                     
                     <!-- LUNES -->
                     <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1">
-                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
-                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b pb-0.5 text-center">Lunes</h3>
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm border-b border-slate-700 flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-0.5 text-center">Lunes</h3>
                         <div>
-                            <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
-                            <textarea oninput="savePlanner('lun', 'comida', this.value)" id="plan-lun-comida" placeholder="Añadir..." class="w-full bg-transparent border-b focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            <span class="text-[8px] font-bold text-amber-700 uppercase flex items-center"><span class="mr-1">☀️</span> Comida</span>
+                            <textarea oninput="savePlanner('lun', 'comida', this.value)" id="plan-lun-comida" placeholder="Añadir..." class="w-full bg-transparent border-b border-slate-200 focus:outline-none focus:ring-0 text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-slate-400"></textarea>
                         </div>
                         <div>
-                            <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
-                            <textarea oninput="savePlanner('lun', 'cena', this.value)" id="plan-lun-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            <span class="text-[8px] font-bold text-indigo-700 uppercase flex items-center"><span class="mr-1">🌙</span> Cena</span>
+                            <textarea oninput="savePlanner('lun', 'cena', this.value)" id="plan-lun-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-slate-400"></textarea>
                         </div>
                     </div>
 
                     <!-- MARTES -->
                     <div class="bg-brand/5 rounded-xl p-2 shadow-sm border border-brand/20 relative pt-4 space-y-1">
-                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
-                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-brand-dark border-b pb-0.5 text-center">Martes</h3>
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm border-b border-slate-700 flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-brand-dark border-b border-brand-light/40 pb-0.5 text-center">Martes</h3>
                         <div>
-                            <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
-                            <textarea oninput="savePlanner('mar', 'comida', this.value)" id="plan-mar-comida" placeholder="Añadir..." class="w-full bg-transparent border-b focus:outline-none text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            <span class="text-[8px] font-bold text-amber-700 uppercase flex items-center"><span class="mr-1">☀️</span> Comida</span>
+                            <textarea oninput="savePlanner('mar', 'comida', this.value)" id="plan-mar-comida" placeholder="Añadir..." class="w-full bg-transparent border-b border-brand-light/30 focus:outline-none focus:ring-0 text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-brand-light/50"></textarea>
                         </div>
                         <div>
-                            <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
-                            <textarea oninput="savePlanner('mar', 'cena', this.value)" id="plan-mar-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            <span class="text-[8px] font-bold text-indigo-700 uppercase flex items-center"><span class="mr-1">🌙</span> Cena</span>
+                            <textarea oninput="savePlanner('mar', 'cena', this.value)" id="plan-mar-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-brand-light/50"></textarea>
                         </div>
                     </div>
 
                     <!-- MIÉRCOLES -->
                     <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1">
-                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
-                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b pb-0.5 text-center">Miércoles</h3>
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm border-b border-slate-700 flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-0.5 text-center">Miércoles</h3>
                         <div>
-                            <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
-                            <textarea oninput="savePlanner('mie', 'comida', this.value)" id="plan-mie-comida" placeholder="Añadir..." class="w-full bg-transparent border-b focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            <span class="text-[8px] font-bold text-amber-700 uppercase flex items-center"><span class="mr-1">☀️</span> Comida</span>
+                            <textarea oninput="savePlanner('mie', 'comida', this.value)" id="plan-mie-comida" placeholder="Añadir..." class="w-full bg-transparent border-b border-slate-200 focus:outline-none focus:ring-0 text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-slate-400"></textarea>
                         </div>
                         <div>
-                            <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
-                            <textarea oninput="savePlanner('mie', 'cena', this.value)" id="plan-mie-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            <span class="text-[8px] font-bold text-indigo-700 uppercase flex items-center"><span class="mr-1">🌙</span> Cena</span>
+                            <textarea oninput="savePlanner('mie', 'cena', this.value)" id="plan-mie-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-slate-400"></textarea>
                         </div>
                     </div>
 
                     <!-- JUEVES -->
                     <div class="bg-brand/5 rounded-xl p-2 shadow-sm border border-brand/20 relative pt-4 space-y-1">
-                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
-                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-brand-dark border-b pb-0.5 text-center">Jueves</h3>
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm border-b border-slate-700 flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-brand-dark border-b border-brand-light/40 pb-0.5 text-center">Jueves</h3>
                         <div>
-                            <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
-                            <textarea oninput="savePlanner('jue', 'comida', this.value)" id="plan-jue-comida" placeholder="Añadir..." class="w-full bg-transparent border-b focus:outline-none text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            <span class="text-[8px] font-bold text-amber-700 uppercase flex items-center"><span class="mr-1">☀️</span> Comida</span>
+                            <textarea oninput="savePlanner('jue', 'comida', this.value)" id="plan-jue-comida" placeholder="Añadir..." class="w-full bg-transparent border-b border-brand-light/30 focus:outline-none focus:ring-0 text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-brand-light/50"></textarea>
                         </div>
                         <div>
-                            <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
-                            <textarea oninput="savePlanner('jue', 'cena', this.value)" id="plan-jue-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            <span class="text-[8px] font-bold text-indigo-700 uppercase flex items-center"><span class="mr-1">🌙</span> Cena</span>
+                            <textarea oninput="savePlanner('jue', 'cena', this.value)" id="plan-jue-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-brand-light/50"></textarea>
                         </div>
                     </div>
 
                     <!-- VIERNES -->
                     <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1 col-span-2">
-                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
-                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b pb-0.5 text-center">Viernes</h3>
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm border-b border-slate-700 flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-0.5 text-center">Viernes</h3>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
-                                <textarea oninput="savePlanner('vie', 'comida', this.value)" id="plan-vie-comida" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                                <span class="text-[8px] font-bold text-amber-700 uppercase flex items-center"><span class="mr-1">☀️</span> Comida</span>
+                                <textarea oninput="savePlanner('vie', 'comida', this.value)" id="plan-vie-comida" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-slate-400"></textarea>
                             </div>
                             <div>
-                                <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
-                                <textarea oninput="savePlanner('vie', 'cena', this.value)" id="plan-vie-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                                <span class="text-[8px] font-bold text-indigo-700 uppercase flex items-center"><span class="mr-1">🌙</span> Cena</span>
+                                <textarea oninput="savePlanner('vie', 'cena', this.value)" id="plan-vie-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight placeholder:text-slate-400"></textarea>
                             </div>
                         </div>
                     </div>
@@ -292,7 +310,7 @@
             <div id="tuppers-weeks-container" class="space-y-2"></div>
         </section>
 
-        <!-- SECCIÓN 5: ASISTENCIA -->
+        <!-- SECCIÓN 5: ASISTENCIA FAMILIAR -->
         <section id="sec-attendance" class="space-y-5 hidden">
             <div class="flex items-center justify-between pb-3 border-b border-slate-200">
                 <div class="flex items-center space-x-3">
@@ -331,41 +349,54 @@
 
     </main>
 
-    <!-- BARRA INFERIOR -->
+    <!-- MENÚ DE NAVEGACIÓN INFERIOR -->
     <nav class="fixed bottom-0 left-0 right-0 bg-black text-slate-400 border-t border-slate-900 shadow-2xl z-40 pb-safe">
         <div id="nav-container" class="grid grid-cols-5 max-w-md mx-auto py-1.5 px-1 items-center">
+            
             <button onclick="switchTab('planner')" id="nav-planner" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-white bg-brand-dark transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Menú</span>
             </button>
 
             <button onclick="switchTab('shopping')" id="nav-shopping" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                </svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Compra</span>
             </button>
 
             <button onclick="switchTab('alerts')" id="nav-alerts" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Caducidad</span>
             </button>
 
             <button onclick="switchTab('tuppers')" id="nav-tuppers" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Tuppers</span>
             </button>
 
             <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Asistencia</span>
             </button>
+
         </div>
     </nav>
 
-    <!-- FIREBASE FIRESTORE REAL-TIME SYNC LOGIC -->
+    <!-- FIREBASE FIRESTORE SYNC & PUSH SERVICE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // Credenciales sincronizadas con the-fridge-gd
         const firebaseConfig = {
             apiKey: "AIzaSyC4zVbZZi901BPs_H86zGJcWo1dPjuvQeI",
             authDomain: "the-fridge-gd.firebaseapp.com",
@@ -380,6 +411,7 @@
         const db = getFirestore(app);
         const familyDocRef = doc(db, "hogar", "datos_compartidos");
 
+        // Estado global expuesto
         window.STATE = {
             shoppingItems: [],
             expiringItems: [],
@@ -397,6 +429,7 @@
             }
         };
 
+        // Persistencia en Firebase
         window.persistData = async function() {
             try {
                 await setDoc(familyDocRef, window.STATE);
@@ -405,6 +438,7 @@
             }
         };
 
+        // Escucha en tiempo real de cambios
         onSnapshot(familyDocRef, (docSnap) => {
             if (docSnap.exists()) {
                 const cloudData = docSnap.data();
@@ -448,6 +482,7 @@
             return (s || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         };
 
+        // Registro del Service Worker push
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./firebase-messaging-sw.js')
                 .then(() => console.log('Service Worker listo'))
@@ -457,7 +492,7 @@
         let notificationsAllowed = false;
         window.requestNotificationPermission = function(silent = false) {
             if (!('Notification' in window)) {
-                if (!silent) showToast("Aviso", "Dispositivo no compatible con notificaciones.");
+                if (!silent) showToast("Aviso", "Este dispositivo no admite notificaciones.");
                 return;
             }
 
@@ -466,11 +501,13 @@
                 if (permission === 'granted') {
                     notificationsAllowed = true;
                     if (dot) dot.classList.remove('hidden');
-                    if (!silent) showToast("🔔 Activadas", "Avisos nativos listos.");
+                    if (!silent) {
+                        showToast("🔔 Activadas", "Recibirás avisos en tu pantalla.");
+                    }
                 } else {
                     notificationsAllowed = false;
                     if (dot) dot.classList.add('hidden');
-                    if (!silent) showToast("Aviso", "Permiso denegado.");
+                    if (!silent) showToast("Aviso", "Permiso de notificaciones denegado.");
                 }
             });
         };
@@ -478,15 +515,29 @@
         let toastTimeout;
         window.showToast = function(title, message) {
             const toast = document.getElementById('toast');
-            document.getElementById('toast-title').textContent = title;
-            document.getElementById('toast-message').textContent = message;
-            toast.classList.remove('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
-            toast.classList.add('translate-y-0', 'opacity-100');
+            const tTitle = document.getElementById('toast-title');
+            const tMsg = document.getElementById('toast-message');
+
+            if (tTitle) tTitle.textContent = title;
+            if (tMsg) tMsg.textContent = message;
+
+            if (toast) {
+                toast.classList.remove('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            }
+
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
+                window.hideToast();
+            }, 3500);
+        };
+
+        window.hideToast = function() {
+            const toast = document.getElementById('toast');
+            if (toast) {
                 toast.classList.add('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
                 toast.classList.remove('translate-y-0', 'opacity-100');
-            }, 3500);
+            }
         };
 
         // --- COMPRA ---
@@ -519,16 +570,26 @@
         window.toggleItemCompleted = function(id) {
             const card = document.getElementById(`shop-item-${id}`);
             if (card) card.classList.add('opacity-40', 'scale-95');
-            setTimeout(() => window.deleteShoppingItem(id), 300);
+            setTimeout(() => {
+                window.deleteShoppingItem(id);
+            }, 300);
         };
 
         window.addManualProduct = function() {
             const nameInput = document.getElementById('new-product-name');
             const noteInput = document.getElementById('new-product-note');
             const name = nameInput ? nameInput.value.trim() : '';
+            const note = noteInput ? noteInput.value.trim() : '';
+
             if (!name) return;
             if (!window.STATE.shoppingItems) window.STATE.shoppingItems = [];
-            window.STATE.shoppingItems.push({ id: Date.now().toString(), name, note: noteInput?.value.trim() || null, completed: false, alertId: null });
+            window.STATE.shoppingItems.push({
+                id: Date.now().toString(),
+                name: name,
+                note: note || null,
+                completed: false,
+                alertId: null
+            });
             window.persistData();
             if (nameInput) nameInput.value = '';
             if (noteInput) noteInput.value = '';
@@ -546,7 +607,8 @@
             container.innerHTML = '';
             let unpaid = 0, paid = 0;
 
-            (window.STATE.tuppers || []).forEach(t => {
+            const tuppersList = window.STATE.tuppers || [];
+            tuppersList.forEach(t => {
                 const total = (t.qty || 1) * (t.price || 0);
                 if (t.collected) paid += total; else unpaid += total;
 
@@ -567,20 +629,34 @@
                 container.appendChild(row);
             });
 
-            document.getElementById('total-unpaid-tuppers').textContent = `${unpaid.toFixed(2)} €`;
-            document.getElementById('total-paid-tuppers').textContent = `${paid.toFixed(2)} €`;
+            const unpaidEl = document.getElementById('total-unpaid-tuppers');
+            const paidEl = document.getElementById('total-paid-tuppers');
+            if (unpaidEl) unpaidEl.textContent = `${unpaid.toFixed(2)} €`;
+            if (paidEl) paidEl.textContent = `${paid.toFixed(2)} €`;
         };
 
         window.addTupper = function() {
             const nameInput = document.getElementById('tupper-name');
             const qtyInput = document.getElementById('tupper-quantity');
             const priceInput = document.getElementById('tupper-price');
+
             const name = nameInput ? nameInput.value.trim() : '';
+            const qty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+            const price = priceInput ? (parseFloat(priceInput.value) || 0) : 0;
+
             if (!name) return;
+            if (!window.STATE.tuppers) window.STATE.tuppers = [];
 
             const dateStr = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            if (!window.STATE.tuppers) window.STATE.tuppers = [];
-            window.STATE.tuppers.push({ id: 'tup_' + Date.now(), name, qty: parseInt(qtyInput?.value) || 1, price: parseFloat(priceInput?.value) || 0, date: dateStr, collected: false });
+
+            window.STATE.tuppers.push({
+                id: 'tup_' + Date.now(),
+                name: name,
+                qty: qty,
+                price: price,
+                date: dateStr,
+                collected: false
+            });
             window.persistData();
 
             if (nameInput) nameInput.value = '';
@@ -590,7 +666,10 @@
 
         window.toggleTupper = function(id) {
             const t = (window.STATE.tuppers || []).find(x => x.id === id);
-            if (t) { t.collected = !t.collected; window.persistData(); }
+            if (t) {
+                t.collected = !t.collected;
+                window.persistData();
+            }
         };
 
         window.deleteTupper = function(id) {
@@ -598,18 +677,19 @@
             window.persistData();
         };
 
-        // --- CADUCIDAD ---
+        // --- CONSUMIR PRONTO ---
         window.renderExpiringList = function() {
             const container = document.getElementById('expiring-list-container');
             if (!container) return;
             container.innerHTML = '';
+
             const list = window.STATE.expiringItems || [];
             if (list.length === 0) {
                 container.innerHTML = `<div class="text-center py-6 bg-white rounded-xl border border-slate-200 text-xs text-slate-400">No hay comida en riesgo.</div>`;
                 return;
             }
 
-            list.forEach(item => {
+            window.STATE.expiringItems.forEach(item => {
                 const el = document.createElement('div');
                 let badgeClass = 'border-accent/40 bg-accent/5 text-accent-dark font-semibold';
                 if (item.urgency === 'medium') badgeClass = 'border-amber-200 bg-amber-50/50 text-amber-800';
@@ -617,20 +697,36 @@
 
                 el.className = `p-3.5 rounded-xl border flex justify-between items-center text-xs cursor-pointer ${badgeClass}`;
                 el.onclick = () => window.consumeExpiringItem(item.id);
-                el.innerHTML = `<div><span class="font-bold uppercase tracking-wider text-slate-900">${escapeHtml(item.name)}</span><p class="text-[10px] text-slate-500 mt-0.5">${item.note}</p></div><span class="text-sm">🍴</span>`;
+
+                el.innerHTML = `
+                    <div>
+                        <span class="font-bold uppercase tracking-wider text-slate-900">${escapeHtml(item.name)}</span>
+                        <p class="text-[10px] text-slate-500 mt-0.5">${item.note}</p>
+                    </div>
+                    <span class="text-sm">🍴</span>
+                `;
                 container.appendChild(el);
             });
         };
 
         window.addExpiringProduct = function() {
             const input = document.getElementById('exp-product-name');
-            const urgency = document.querySelector('input[name="exp-urgency"]:checked')?.value || 'high';
+            const urgencyRadio = document.querySelector('input[name="exp-urgency"]:checked');
             const name = input ? input.value.trim() : '';
-            if (!name) return;
+            const urgency = urgencyRadio ? urgencyRadio.value : 'high';
 
-            let note = urgency === 'high' ? 'Hoy' : (urgency === 'medium' ? 'Mañana' : 'Esta semana');
+            if (!name) return;
+            let note = 'Hoy';
+            if (urgency === 'medium') note = 'Mañana';
+            if (urgency === 'low') note = 'Esta semana';
+
             if (!window.STATE.expiringItems) window.STATE.expiringItems = [];
-            window.STATE.expiringItems.push({ id: 'exp_' + Date.now(), name, note, urgency });
+            window.STATE.expiringItems.push({
+                id: 'exp_' + Date.now(),
+                name: name,
+                note: note,
+                urgency: urgency
+            });
             window.persistData();
             if (input) input.value = '';
         };
@@ -645,26 +741,42 @@
             const container = document.getElementById('family-list-container');
             if (!container) return;
             container.innerHTML = '';
-            const days = [{ k: 'lun', l: 'Lun' }, { k: 'mar', l: 'Mar' }, { k: 'mie', l: 'Mié' }, { k: 'jue', l: 'Jue' }, { k: 'vie', l: 'Vie' }, { k: 'sab', l: 'Sáb' }, { k: 'dom', l: 'Dom' }];
 
-            (window.STATE.familyMembers || []).forEach(m => {
+            const days = [
+                { k: 'lun', l: 'Lun' },
+                { k: 'mar', l: 'Mar' },
+                { k: 'mie', l: 'Mié' },
+                { k: 'jue', l: 'Jue' },
+                { k: 'vie', l: 'Vie' },
+                { k: 'sab', l: 'Sáb' },
+                { k: 'dom', l: 'Dom' }
+            ];
+
+            const members = window.STATE.familyMembers || [];
+            members.forEach(m => {
                 const card = document.createElement('div');
                 card.className = "p-3.5 bg-white rounded-xl border border-slate-200 shadow-sm space-y-2.5";
                 
                 let daysHtml = days.map(d => {
                     let dayObj = m.weeklyAttendance ? m.weeklyAttendance[d.k] : null;
-                    let comidaIn = true, cenaIn = true;
-                    if (typeof dayObj === 'boolean') { comidaIn = dayObj; cenaIn = dayObj; }
-                    else if (typeof dayObj === 'object' && dayObj !== null) { comidaIn = dayObj.comida !== false; cenaIn = dayObj.cena !== false; }
+                    let comidaIn = true;
+                    let cenaIn = true;
+                    if (typeof dayObj === 'boolean') {
+                        comidaIn = dayObj;
+                        cenaIn = dayObj;
+                    } else if (typeof dayObj === 'object' && dayObj !== null) {
+                        comidaIn = dayObj.comida !== false;
+                        cenaIn = dayObj.cena !== false;
+                    }
 
                     return `
                         <div class="flex flex-col items-center bg-slate-50 border border-slate-200 rounded-lg p-1 space-y-1">
                             <span class="text-[9px] font-bold uppercase text-slate-700 leading-none">${d.l}</span>
-                            <button onclick="toggleWeeklyDayMeal('${m.id}', '${d.k}', 'comida')" class="w-full py-1 rounded text-center transition-all flex items-center justify-center space-x-0.5 ${comidaIn ? 'bg-brand text-white font-bold' : 'bg-slate-200 text-slate-400 line-through'}">
+                            <button onclick="toggleWeeklyDayMeal('${m.id}', '${d.k}', 'comida')" title="Comida (Mediodía)" class="w-full py-1 rounded text-center transition-all active:scale-90 flex items-center justify-center space-x-0.5 ${comidaIn ? 'bg-brand text-white font-bold' : 'bg-slate-200 text-slate-400 line-through'}">
                                 <span class="text-[8px]">☀️</span>
                                 <span class="text-[8px] font-bold">${comidaIn ? '🏠' : '❌'}</span>
                             </button>
-                            <button onclick="toggleWeeklyDayMeal('${m.id}', '${d.k}', 'cena')" class="w-full py-1 rounded text-center transition-all flex items-center justify-center space-x-0.5 ${cenaIn ? 'bg-slate-900 text-white font-bold' : 'bg-slate-200 text-slate-400 line-through'}">
+                            <button onclick="toggleWeeklyDayMeal('${m.id}', '${d.k}', 'cena')" title="Cena (Noche)" class="w-full py-1 rounded text-center transition-all active:scale-90 flex items-center justify-center space-x-0.5 ${cenaIn ? 'bg-slate-900 text-white font-bold' : 'bg-slate-200 text-slate-400 line-through'}">
                                 <span class="text-[8px]">🌙</span>
                                 <span class="text-[8px] font-bold">${cenaIn ? '🏠' : '❌'}</span>
                             </button>
@@ -687,11 +799,20 @@
             const input = document.getElementById('new-member-name');
             const name = input ? input.value.trim() : '';
             if (!name) return;
+
             if (!window.STATE.familyMembers) window.STATE.familyMembers = [];
             window.STATE.familyMembers.push({
                 id: 'fam_' + Date.now(),
-                name,
-                weeklyAttendance: { lun: { comida: true, cena: true }, mar: { comida: true, cena: true }, mie: { comida: true, cena: true }, jue: { comida: true, cena: true }, vie: { comida: true, cena: true }, sab: { comida: true, cena: true }, dom: { comida: true, cena: true } }
+                name: name,
+                weeklyAttendance: {
+                    lun: { comida: true, cena: true },
+                    mar: { comida: true, cena: true },
+                    mie: { comida: true, cena: true },
+                    jue: { comida: true, cena: true },
+                    vie: { comida: true, cena: true },
+                    sab: { comida: true, cena: true },
+                    dom: { comida: true, cena: true }
+                }
             });
             window.persistData();
             if (input) input.value = '';
@@ -719,12 +840,20 @@
 
         window.resetAttendanceWeek = function() {
             (window.STATE.familyMembers || []).forEach(m => {
-                m.weeklyAttendance = { lun: { comida: true, cena: true }, mar: { comida: true, cena: true }, mie: { comida: true, cena: true }, jue: { comida: true, cena: true }, vie: { comida: true, cena: true }, sab: { comida: true, cena: true }, dom: { comida: true, cena: true } };
+                m.weeklyAttendance = {
+                    lun: { comida: true, cena: true },
+                    mar: { comida: true, cena: true },
+                    mie: { comida: true, cena: true },
+                    jue: { comida: true, cena: true },
+                    vie: { comida: true, cena: true },
+                    sab: { comida: true, cena: true },
+                    dom: { comida: true, cena: true }
+                };
             });
             window.persistData();
         };
 
-        // --- MENÚS ---
+        // --- MENÚS / PIZARRA ---
         window.loadPlanner = function() {
             const days = ['lun', 'mar', 'mie', 'jue', 'vie'];
             days.forEach(d => {
@@ -732,8 +861,12 @@
                 const elCena = document.getElementById(`plan-${d}-cena`);
                 const dayData = window.STATE.planner ? window.STATE.planner[d] : null;
 
-                if (elComida) elComida.value = (typeof dayData === 'object' && dayData !== null) ? (dayData.comida || '') : (typeof dayData === 'string' ? dayData : '');
-                if (elCena) elCena.value = (typeof dayData === 'object' && dayData !== null) ? (dayData.cena || '') : '';
+                if (elComida) {
+                    elComida.value = (typeof dayData === 'object' && dayData !== null) ? (dayData.comida || '') : (typeof dayData === 'string' ? dayData : '');
+                }
+                if (elCena) {
+                    elCena.value = (typeof dayData === 'object' && dayData !== null) ? (dayData.cena || '') : '';
+                }
             });
         };
 
