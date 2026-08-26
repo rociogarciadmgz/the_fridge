@@ -4,21 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lista Familiar Inteligente</title>
-    <!-- Google Fonts: JetBrains Mono y Roboto Mono para diseño ultra limpio -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
-    <!-- Silencia el aviso informativo del CDN de Tailwind (no afecta al funcionamiento) -->
-    <script>
-        (function () {
-            const originalWarn = console.warn;
-            console.warn = function (...args) {
-                if (args[0] && String(args[0]).includes('cdn.tailwindcss.com')) return;
-                originalWarn.apply(console, args);
-            };
-        })();
-    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -41,654 +31,295 @@
         }
     </script>
     <style>
-        /* Ajustes visuales contra selección accidental y scrollbars */
-        .no-select {
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 9999px;
-        }
-        /* Ocultar barra de scroll en navegación inferior para limpieza visual */
-        .scrollbar-none::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-none {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .no-select { -webkit-tap-highlight-color: transparent; user-select: none; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="h-full font-sans antialiased text-slate-900 flex flex-col no-select bg-slate-50">
 
-    <!-- CABECERA DE LA APP (Estilo Premium Negro de Alto Contraste) -->
-    <header class="bg-black text-white shadow-md sticky top-0 z-40 safe-top border-b border-slate-900">
+    <!-- CABECERA DE LA APP -->
+    <header class="bg-black text-white shadow-md sticky top-0 z-40 border-b border-slate-900">
         <div class="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="bg-brand text-white p-2 rounded-xl shadow-md">
-                    <!-- Icono Carrito SVG -->
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
                 <div>
                     <h1 class="font-title font-bold text-sm leading-tight tracking-tight">Compra Familiar</h1>
-                    <p class="text-[9px] text-slate-400 font-medium tracking-widest uppercase">Mono System v4.0</p>
+                    <p class="text-[9px] text-slate-400 font-medium tracking-widest uppercase">Mono System v4.0 (Cloud)</p>
                 </div>
             </div>
             
-            <div class="flex items-center space-x-2">
-                <!-- Ajustes de Telegram -->
-                <button id="settings-btn" onclick="openTelegramSettings()" class="relative p-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white transition-all active:scale-95">
-                    <span id="tg-dot" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-emerald-400 rounded-full hidden"></span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                </button>
-
-                <!-- Indicador de Notificaciones / Estado -->
-                <button id="notification-bell" onclick="requestNotificationPermission()" class="relative p-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white transition-all active:scale-95">
-                    <span id="bell-dot" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-brand rounded-full hidden animate-pulse"></span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                    </svg>
-                </button>
-            </div>
+            <button id="notification-bell" onclick="requestNotificationPermission()" class="relative p-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white transition-all active:scale-95">
+                <span id="bell-dot" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-brand rounded-full hidden animate-pulse"></span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+            </button>
         </div>
     </header>
 
-    <!-- MODAL DE AJUSTES DE TELEGRAM -->
-    <div id="tg-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-        <div class="bg-white rounded-2xl w-full max-w-sm p-5 shadow-2xl space-y-4 border border-slate-200">
-            <div class="flex items-center justify-between">
-                <h3 class="font-title font-extrabold text-base text-black">Conectar Telegram</h3>
-                <button onclick="closeTelegramSettings()" class="text-slate-400 hover:text-black">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            <p class="text-[10px] text-slate-500 leading-relaxed">Crea un bot con <b>@BotFather</b> y copia su token. Para el Chat ID, escribe a tu bot y usa <b>@userinfobot</b> o un grupo.</p>
-            <div class="space-y-2">
-                <label class="text-[10px] font-bold uppercase tracking-wide text-slate-600">Token del Bot</label>
-                <input type="text" id="tg-token" placeholder="123456789:AAE..." class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50 focus:outline-none focus:ring-1 focus:ring-brand">
-            </div>
-            <div class="space-y-2">
-                <label class="text-[10px] font-bold uppercase tracking-wide text-slate-600">Chat ID</label>
-                <input type="text" id="tg-chatid" placeholder="Ej: 123456789 o -100..." class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50 focus:outline-none focus:ring-1 focus:ring-brand">
-            </div>
-            <label class="flex items-center space-x-2 text-xs text-slate-700">
-                <input type="checkbox" id="tg-enabled" class="w-4 h-4 accent-brand">
-                <span>Activar avisos por Telegram</span>
-            </label>
-            <div class="flex space-x-2 pt-1">
-                <button onclick="testTelegram()" class="flex-1 py-2.5 bg-slate-100 text-slate-800 rounded-lg text-xs font-bold border border-slate-300 hover:bg-slate-200 active:scale-98 transition-all">Probar</button>
-                <button onclick="saveTelegramSettings()" class="flex-1 py-2.5 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold active:scale-98 transition-all">Guardar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST DE NOTIFICACIONES INTERNAS -->
+    <!-- TOAST DE NOTIFICACIONES -->
     <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-sm bg-black text-white rounded-xl p-4 shadow-2xl flex items-start space-x-3 transition-all duration-300 translate-y-[-150%] opacity-0 pointer-events-none border border-slate-800">
-        <div class="bg-brand text-white p-2 rounded-lg mt-0.5" id="toast-icon">
-            ℹ️
-        </div>
+        <div class="bg-brand text-white p-2 rounded-lg mt-0.5">ℹ️</div>
         <div class="flex-1">
-            <h4 class="font-title font-bold text-xs text-brand-light uppercase tracking-wider" id="toast-title">Aviso del Sistema</h4>
-            <p class="text-xs text-slate-300 mt-1" id="toast-message">Mensaje del sistema</p>
+            <h4 class="font-title font-bold text-xs text-brand-light uppercase tracking-wider" id="toast-title">Aviso</h4>
+            <p class="text-xs text-slate-300 mt-1" id="toast-message">Mensaje</p>
         </div>
-        <button onclick="hideToast()" class="text-slate-400 hover:text-white p-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
     </div>
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 overflow-y-auto pb-24 max-w-md w-full mx-auto px-4 pt-5">
         
-        <!-- SECCIÓN 1: LA LISTA DE LA COMPRA -->
+        <!-- SECCIÓN 1: COMPRA -->
         <section id="sec-shopping" class="space-y-5">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="font-title font-extrabold text-lg text-black">Lista de hoy</h2>
-                    <p class="text-[10px] text-slate-500 mt-0.5">Pulsa un artículo para meterlo al carro y borrarlo</p>
-                </div>
+            <div>
+                <h2 class="font-title font-extrabold text-lg text-black">Lista de hoy</h2>
+                <p class="text-[10px] text-slate-500 mt-0.5">Pulsa un artículo para meterlo al carro y borrarlo</p>
             </div>
-
-            <!-- CONTENEDOR DE LA LISTA -->
-            <div id="shopping-list-container" class="space-y-2.5">
-                <!-- Se inyecta dinámicamente con JS -->
-            </div>
-
-            <!-- FORMULARIO PARA AÑADIR PRODUCTO -->
+            <div id="shopping-list-container" class="space-y-2.5"></div>
             <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
-                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Añadir producto manualmente</h3>
+                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Añadir producto</h3>
                 <div class="space-y-2">
-                    <input type="text" id="new-product-name" placeholder="Ej: Manzanas, Pan..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand transition-all bg-slate-50 placeholder:text-slate-400">
-                    <input type="text" id="new-product-note" placeholder="Nota opcional (Ej: Bolsa grande...)" class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand transition-all bg-slate-50 placeholder:text-slate-400">
-                    <button onclick="addManualProduct()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all active:scale-98 flex items-center justify-center space-x-2 shadow-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
-                        <span>Añadir a la lista</span>
-                    </button>
+                    <input type="text" id="new-product-name" placeholder="Ej: Manzanas, Pan..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
+                    <input type="text" id="new-product-note" placeholder="Nota opcional (Ej: Bolsa grande...)" class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
+                    <button onclick="addManualProduct()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all shadow-sm">Añadir a la lista</button>
                 </div>
             </div>
         </section>
 
-        <!-- SECCIÓN 2: ALERTAS DE "QUEDA POCO" -->
+        <!-- SECCIÓN 2: DESPENSA / ALERTAS -->
         <section id="sec-alerts" class="space-y-5 hidden">
             <div>
                 <h2 class="font-title font-extrabold text-lg text-black">Control de Despensa</h2>
                 <p class="text-[10px] text-slate-500 mt-0.5">Controla qué se está acabando para comprarlo ya</p>
             </div>
-
-            <!-- BOTÓN AÑADIR NUEVA ALERTA PERMANENTE -->
             <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
                 <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Crear botón de aviso permanente</h3>
                 <div class="flex space-x-2">
-                    <input type="text" id="new-alert-name" placeholder="Ej: Leche, Café, Papel..." class="flex-1 px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand transition-all bg-slate-50">
-                    <button onclick="addNewAlertButton()" class="px-4 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center justify-center">
-                        Crear
-                    </button>
+                    <input type="text" id="new-alert-name" placeholder="Ej: Leche, Café, Papel..." class="flex-1 px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
+                    <button onclick="addNewAlertButton()" class="px-4 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">Crear</button>
                 </div>
             </div>
-
-            <!-- CONTENEDOR DE BOTONES DE ALERTA -->
             <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
-                <div id="alerts-grid" class="grid grid-cols-2 gap-3">
-                    <!-- Se inyectan botones dinámicamente con JS -->
-                </div>
-                <div id="empty-alerts-msg" class="text-center py-8 text-slate-400 text-xs hidden">
-                    No tienes botones creados. ¡Añade los primeros arriba!
-                </div>
+                <div id="alerts-grid" class="grid grid-cols-2 gap-3"></div>
+                <div id="empty-alerts-msg" class="text-center py-8 text-slate-400 text-xs hidden">No tienes botones creados.</div>
             </div>
         </section>
 
-        <!-- SECCIÓN 3: CONTROL DE TUPPERS (Contabilidad y Ventas Semanales) -->
+        <!-- SECCIÓN 3: TUPPERS -->
         <section id="sec-tuppers" class="space-y-5 hidden">
             <div>
                 <h2 class="font-title font-extrabold text-lg text-black">Control de Tuppers (€)</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Control de producción, cantidad y cobros semanales</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">Control de producción y cobros</p>
             </div>
-
-            <!-- CARD CON METRICAS FINANCIERAS ACUMULADAS -->
             <div class="bg-black text-white rounded-2xl p-4 shadow-md border border-slate-900 grid grid-cols-2 gap-2 text-center">
                 <div class="border-r border-slate-800 pr-1">
                     <p class="text-[9px] uppercase tracking-wider text-slate-400">Pendiente Cobrar</p>
                     <p id="total-unpaid-tuppers" class="text-lg font-bold text-brand-light">0.00 €</p>
                 </div>
                 <div>
-                    <p class="text-[9px] uppercase tracking-wider text-slate-400">Cobrado este Mes</p>
+                    <p class="text-[9px] uppercase tracking-wider text-slate-400">Cobrado</p>
                     <p id="total-paid-tuppers" class="text-lg font-bold text-emerald-400">0.00 €</p>
                 </div>
             </div>
-
-            <!-- BOTÓN COBRAR TODO: liquida y reinicia contadores a 0 -->
-            <button onclick="cashOutTuppers()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all active:scale-98 flex items-center justify-center space-x-2 shadow-sm">
-                <span>💵 Realizar Cobro y Reiniciar Contadores</span>
-            </button>
-
-            <!-- FORMULARIO NUEVO TUPPER HECHO -->
             <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
-                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Registrar Tuppers Hechos</h3>
+                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Registrar Tupper</h3>
                 <div class="space-y-2">
-                    <input type="text" id="tupper-name" placeholder="Ej: Lentejas con chorizo, Croquetas..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand transition-all bg-slate-50">
-                    
+                    <input type="text" id="tupper-name" placeholder="Ej: Lentejas, Croquetas..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
                     <div class="grid grid-cols-2 gap-2">
-                        <!-- Cantidad -->
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 block mb-1">Cantidad hecha</label>
-                            <input type="number" id="tupper-quantity" min="1" max="100" value="1" class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50" placeholder="Uds">
+                            <label class="text-[9px] font-bold text-slate-500 block mb-1">Cantidad</label>
+                            <input type="number" id="tupper-quantity" min="1" value="1" class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
                         </div>
-                        <!-- Precio por Tupper -->
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 block mb-1">Precio Unitario (€)</label>
-                            <input type="number" id="tupper-price" min="0" step="0.10" value="4.00" class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50" placeholder="Ej: 4.50">
+                            <label class="text-[9px] font-bold text-slate-500 block mb-1">Precio (€)</label>
+                            <input type="number" id="tupper-price" min="0" step="0.10" value="4.00" class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
                         </div>
                     </div>
-
-                    <button onclick="addTupper()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all active:scale-98 flex items-center justify-center space-x-2 shadow-sm">
-                        <span>Registrar y Acumular</span>
-                    </button>
+                    <button onclick="addTupper()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">Registrar</button>
                 </div>
             </div>
-
-            <!-- LISTADO DE TUPPERS AGRUPADO SEMANALMENTE -->
-            <div id="tuppers-weeks-container" class="space-y-4">
-                <!-- Se inyecta dinámicamente con JS -->
-            </div>
+            <div id="tuppers-weeks-container" class="space-y-2"></div>
         </section>
 
         <!-- SECCIÓN 4: CONSUMIR PRONTO -->
         <section id="sec-expiring" class="space-y-5 hidden">
             <div>
                 <h2 class="font-title font-extrabold text-lg text-black">Consumir Pronto</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Evita que la comida se eche a perder en la nevera</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">Evita que la comida se eche a perder</p>
             </div>
-
-            <!-- FORMULARIO PARA AÑADIR COSAS POR CADUCAR -->
             <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
                 <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Añadir alimento en riesgo</h3>
                 <div class="space-y-2">
-                    <input type="text" id="exp-product-name" placeholder="Ej: Carne picada, Yogures..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand transition-all bg-slate-50">
-                    
-                    <!-- Niveles de Urgencia -->
+                    <input type="text" id="exp-product-name" placeholder="Ej: Carne picada, Yogures..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
                     <div class="grid grid-cols-3 gap-2">
-                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer text-center hover:bg-slate-100">
+                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border bg-slate-50 cursor-pointer text-center">
                             <input type="radio" name="exp-urgency" value="high" checked class="accent-red-600 mb-1">
-                            <span class="text-[8px] font-bold text-red-600">HOY MISMO</span>
+                            <span class="text-[8px] font-bold text-red-600">HOY</span>
                         </label>
-                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer text-center hover:bg-slate-100">
+                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border bg-slate-50 cursor-pointer text-center">
                             <input type="radio" name="exp-urgency" value="medium" class="accent-amber-500 mb-1">
                             <span class="text-[8px] font-bold text-amber-600">MAÑANA</span>
                         </label>
-                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer text-center hover:bg-slate-100">
+                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border bg-slate-50 cursor-pointer text-center">
                             <input type="radio" name="exp-urgency" value="low" class="accent-brand mb-1">
-                            <span class="text-[8px] font-bold text-brand-dark">ESTA SEMANA</span>
+                            <span class="text-[8px] font-bold text-brand-dark">SEMANA</span>
                         </label>
                     </div>
-
-                    <button onclick="addExpiringProduct()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all active:scale-98 flex items-center justify-center space-x-2 shadow-sm">
-                        <span>Añadir a la alerta de consumo</span>
-                    </button>
+                    <button onclick="addExpiringProduct()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">Guardar aviso</button>
                 </div>
             </div>
-
-            <!-- LISTADO DE ALIMENTOS POR CONSUMIR -->
-            <div id="expiring-list-container" class="space-y-2.5">
-                <!-- Se inyecta dinámicamente -->
-            </div>
+            <div id="expiring-list-container" class="space-y-2.5"></div>
         </section>
 
-        <!-- SECCIÓN 5: ¿QUIÉN COME EN CASA? (Calendario Semanal) -->
+        <!-- SECCIÓN 5: ASISTENCIA -->
         <section id="sec-attendance" class="space-y-5 hidden">
             <div class="flex items-center justify-between">
                 <div>
                     <h2 class="font-title font-extrabold text-lg text-black">Asistencia</h2>
                     <p class="text-[10px] text-slate-500 mt-0.5">Control semanal de quién come en casa</p>
                 </div>
-                <!-- Botón para reiniciar toda la semana -->
-                <button onclick="resetAttendanceWeek()" class="px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-[9px] font-bold border border-slate-300 hover:bg-slate-200 transition-all active:scale-95">
-                    Reiniciar Semana
-                </button>
+                <button onclick="resetAttendanceWeek()" class="px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-[9px] font-bold border border-slate-300">Reiniciar</button>
             </div>
-
-            <!-- FORMULARIO GESTIÓN FAMILIAR -->
             <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
-                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Añadir familiar</h3>
                 <div class="flex space-x-2">
-                    <input type="text" id="new-member-name" placeholder="Ej: Carlos, Sofía..." class="flex-1 px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand transition-all bg-slate-50">
-                    <button onclick="addFamilyMember()" class="px-4 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center justify-center">
-                        Añadir
-                    </button>
+                    <input type="text" id="new-member-name" placeholder="Nombre familiar..." class="flex-1 px-4 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
+                    <button onclick="addFamilyMember()" class="px-4 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">Añadir</button>
                 </div>
             </div>
-
-            <!-- LEYENDA DEL CALENDARIO -->
-            <div class="flex items-center justify-center space-x-4 py-1.5 text-[9px] bg-white border border-slate-200 rounded-lg text-slate-500 font-semibold uppercase">
-                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-brand mr-1.5 inline-block"></span>🍴 Comida</span>
-                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-1.5 inline-block"></span>🌙 Cena</span>
-                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-slate-300 mr-1.5 inline-block"></span>❌ Fuera</span>
-            </div>
-
-            <!-- RESUMEN DE HOY -->
-            <div class="bg-black text-white rounded-2xl p-4 shadow-md border border-slate-900">
-                <div class="flex items-center justify-between mb-3">
-                    <p class="text-[9px] uppercase tracking-widest text-slate-400">Hoy en casa</p>
-                    <span id="today-day-label" class="text-[9px] uppercase tracking-widest text-brand-light font-bold"></span>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="border-r border-slate-800 pr-3">
-                        <p class="text-[9px] uppercase tracking-wider text-slate-400">🍴 Comida</p>
-                        <p id="today-lunch-count" class="text-2xl font-bold text-brand-light">0</p>
-                        <p id="today-lunch-names" class="text-[10px] text-slate-300 mt-0.5 leading-snug"></p>
-                    </div>
-                    <div>
-                        <p class="text-[9px] uppercase tracking-wider text-slate-400">🌙 Cena</p>
-                        <p id="today-dinner-count" class="text-2xl font-bold text-indigo-300">0</p>
-                        <p id="today-dinner-names" class="text-[10px] text-slate-300 mt-0.5 leading-snug"></p>
-                    </div>
-                </div>
-                <button onclick="notifyTodayAttendance()" class="mt-3 w-full py-2.5 bg-brand hover:bg-brand-dark text-white rounded-lg text-[11px] font-bold transition-all active:scale-98">
-                    📲 Enviar recuento de hoy a Telegram
-                </button>
-            </div>
-
-            <!-- LISTADO TÁCTIL DE FAMILIARES CON CALENDARIO SEMANAL -->
-            <div id="family-list-container" class="space-y-3.5">
-                <!-- Se inyecta dinámicamente con JS -->
-            </div>
+            <div id="family-list-container" class="space-y-3.5"></div>
         </section>
 
-        <!-- SECCIÓN 6: CAJÓN DIGITAL DE TICKETS -->
+        <!-- SECCIÓN 6: TICKETS -->
         <section id="sec-tickets" class="space-y-5 hidden">
             <div>
                 <h2 class="font-title font-extrabold text-lg text-black">Fotos de Tickets</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Guarda recibos en la galería local de la app</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">Recibos guardados</p>
             </div>
-
-            <!-- SUBIR TICKET -->
             <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex flex-col items-center justify-center border-dashed border-2">
-                <label for="ticket-upload" class="cursor-pointer flex flex-col items-center space-y-2 w-full py-4">
-                    <div class="p-4 bg-slate-100 rounded-full text-slate-900 hover:bg-slate-200 transition-all">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </div>
-                    <span class="font-title font-bold text-xs text-slate-900 uppercase tracking-wide">Escanear Ticket</span>
-                    <span class="text-[10px] text-slate-400">Usar cámara o elegir archivo</span>
+                <label for="ticket-upload" class="cursor-pointer flex flex-col items-center space-y-2 w-full py-2">
+                    <span class="font-title font-bold text-xs text-slate-900 uppercase">Subir Foto de Ticket</span>
                 </label>
-                <input type="file" id="ticket-upload" accept="image/*" capture="environment" class="hidden" onchange="handleTicketUpload(event)">
+                <input type="file" id="ticket-upload" accept="image/*" class="hidden" onchange="handleTicketUpload(event)">
             </div>
-
-            <!-- GALERÍA DE TICKETS -->
-            <div id="tickets-gallery" class="grid grid-cols-2 gap-4">
-                <!-- Se inyecta dinámicamente -->
-            </div>
-
-            <div id="empty-tickets-msg" class="text-center py-12 text-slate-400 text-xs">
-                Aún no has guardado ningún ticket de compra.
-            </div>
+            <div id="tickets-gallery" class="grid grid-cols-2 gap-4"></div>
+            <div id="empty-tickets-msg" class="text-center py-8 text-slate-400 text-xs">Sin tickets guardados.</div>
         </section>
 
-        <!-- SECCIÓN 7: PLANIFICADOR "IMÁN DE NEVERA" -->
+        <!-- SECCIÓN 7: NEVERA / PIZARRA -->
         <section id="sec-planner" class="space-y-5 hidden">
             <div>
                 <h2 class="font-title font-extrabold text-lg text-black">Pizarra de Menús</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Planes semanales estilo notas de pizarra magnética</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">Notas semanales compartidas</p>
             </div>
-
-            <div class="bg-slate-200 rounded-3xl p-4 shadow-inner space-y-4 border border-slate-300 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-tr from-slate-400/20 via-transparent to-white/30 pointer-events-none"></div>
-
-                <!-- Tarjetas Lunes a Domingo con Imanes Negros -->
-                <div class="grid grid-cols-1 gap-4 relative z-10">
-                    
-                    <!-- LUNES -->
-                    <div class="bg-slate-50 rounded-xl p-4 shadow-md border border-slate-300 relative pt-7 transform rotate-[-0.3deg]">
-                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-4.5 h-4.5 bg-black rounded-full shadow-md border-b border-slate-700 flex items-center justify-center text-[7px] text-slate-400 font-bold">●</div>
-                        <h3 class="font-title font-bold text-xs tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-1">Lunes</h3>
-                        <textarea oninput="savePlanner('lun', this.value)" id="plan-lun" placeholder="Añadir nota de cena..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-slate-800 mt-2 resize-none h-14 placeholder:text-slate-400"></textarea>
+            <div class="bg-slate-200 rounded-3xl p-4 space-y-4 border border-slate-300">
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
+                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Lunes</h3>
+                        <textarea oninput="savePlanner('lun', this.value)" id="plan-lun" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
                     </div>
-
-                    <!-- MARTES -->
-                    <div class="bg-brand/5 rounded-xl p-4 shadow-md border border-brand/20 relative pt-7 transform rotate-[0.3deg]">
-                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-4.5 h-4.5 bg-black rounded-full shadow-md border-b border-slate-700 flex items-center justify-center text-[7px] text-slate-400 font-bold">●</div>
-                        <h3 class="font-title font-bold text-xs tracking-wider uppercase text-brand-dark border-b border-brand-light/40 pb-1">Martes</h3>
-                        <textarea oninput="savePlanner('mar', this.value)" id="plan-mar" placeholder="Añadir nota de cena..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-brand-dark mt-2 resize-none h-14 placeholder:text-brand-light/50"></textarea>
+                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
+                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Martes</h3>
+                        <textarea oninput="savePlanner('mar', this.value)" id="plan-mar" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
                     </div>
-
-                    <!-- MIÉRCOLES -->
-                    <div class="bg-slate-50 rounded-xl p-4 shadow-md border border-slate-300 relative pt-7 transform rotate-[-0.5deg]">
-                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-4.5 h-4.5 bg-black rounded-full shadow-md border-b border-slate-700 flex items-center justify-center text-[7px] text-slate-400 font-bold">●</div>
-                        <h3 class="font-title font-bold text-xs tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-1">Miércoles</h3>
-                        <textarea oninput="savePlanner('mie', this.value)" id="plan-mie" placeholder="Añadir nota de cena..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-slate-800 mt-2 resize-none h-14 placeholder:text-slate-400"></textarea>
+                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
+                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Miércoles</h3>
+                        <textarea oninput="savePlanner('mie', this.value)" id="plan-mie" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
                     </div>
-
-                    <!-- JUEVES -->
-                    <div class="bg-brand/5 rounded-xl p-4 shadow-md border border-brand/20 relative pt-7 transform rotate-[0.4deg]">
-                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-4.5 h-4.5 bg-black rounded-full shadow-md border-b border-slate-700 flex items-center justify-center text-[7px] text-slate-400 font-bold">●</div>
-                        <h3 class="font-title font-bold text-xs tracking-wider uppercase text-brand-dark border-b border-brand-light/40 pb-1">Jueves</h3>
-                        <textarea oninput="savePlanner('jue', this.value)" id="plan-jue" placeholder="Añadir nota de cena..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-brand-dark mt-2 resize-none h-14 placeholder:text-brand-light/50"></textarea>
+                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
+                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Jueves</h3>
+                        <textarea oninput="savePlanner('jue', this.value)" id="plan-jue" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
                     </div>
-
-                    <!-- VIERNES -->
-                    <div class="bg-slate-50 rounded-xl p-4 shadow-md border border-slate-300 relative pt-7 transform rotate-[-0.2deg]">
-                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-4.5 h-4.5 bg-black rounded-full shadow-md border-b border-slate-700 flex items-center justify-center text-[7px] text-slate-400 font-bold">●</div>
-                        <h3 class="font-title font-bold text-xs tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-1">Viernes</h3>
-                        <textarea oninput="savePlanner('vie', this.value)" id="plan-vie" placeholder="Añadir nota de cena..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-slate-800 mt-2 resize-none h-14 placeholder:text-slate-400"></textarea>
+                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
+                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Viernes</h3>
+                        <textarea oninput="savePlanner('vie', this.value)" id="plan-vie" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
                     </div>
-
-                    <!-- SÁBADO -->
-                    <div class="bg-brand/5 rounded-xl p-4 shadow-md border border-brand/20 relative pt-7 transform rotate-[0.3deg]">
-                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-4.5 h-4.5 bg-black rounded-full shadow-md border-b border-slate-700 flex items-center justify-center text-[7px] text-slate-400 font-bold">●</div>
-                        <h3 class="font-title font-bold text-xs tracking-wider uppercase text-brand-dark border-b border-brand-light/40 pb-1">Sábado</h3>
-                        <textarea oninput="savePlanner('sab', this.value)" id="plan-sab" placeholder="¡Fin de semana!..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-brand-dark mt-2 resize-none h-14 placeholder:text-brand-light/50"></textarea>
+                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
+                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Sábado</h3>
+                        <textarea oninput="savePlanner('sab', this.value)" id="plan-sab" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
                     </div>
-
-                    <!-- DOMINGO -->
-                    <div class="bg-slate-50 rounded-xl p-4 shadow-md border border-slate-300 relative pt-7 transform rotate-[-0.4deg]">
-                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-4.5 h-4.5 bg-black rounded-full shadow-md border-b border-slate-700 flex items-center justify-center text-[7px] text-slate-400 font-bold">●</div>
-                        <h3 class="font-title font-bold text-xs tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-1">Domingo</h3>
-                        <textarea oninput="savePlanner('dom', this.value)" id="plan-dom" placeholder="¿Qué comemos hoy?..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-slate-800 mt-2 resize-none h-14 placeholder:text-slate-400"></textarea>
+                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
+                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Domingo</h3>
+                        <textarea oninput="savePlanner('dom', this.value)" id="plan-dom" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
                     </div>
-
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- LIGHTBOX MODAL PARA VER EL TICKET EN PANTALLA COMPLETA -->
-    <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 flex flex-col justify-between items-center p-4 hidden" onclick="closeLightbox()">
-        <button class="self-end text-white bg-white/10 hover:bg-white/20 p-2 rounded-xl mt-4 mr-2" onclick="closeLightbox()">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-        <div class="flex-1 flex items-center justify-center w-full max-w-md">
-            <img id="lightbox-img" src="" alt="Ticket Ampliado" class="max-h-[75vh] max-w-full rounded-lg object-contain shadow-2xl">
-        </div>
-        <div class="pb-12 text-center">
-            <p id="lightbox-date" class="text-xs text-slate-400 font-medium"></p>
-        </div>
-    </div>
-
-    <!-- MENÚ DE NAVEGACIÓN INFERIOR (Barra de color Azul Claro / Vibrante Premium con Desplazamiento Horizontal) -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-brand text-brand-pale border-t border-brand-dark shadow-2xl z-40 pb-safe">
-        <div id="nav-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none py-2 px-3 space-x-1.5 items-center max-w-md mx-auto">
-            
-            <!-- Botón Lista (Compra) -->
-            <button onclick="switchTab('shopping')" id="nav-shopping" class="snap-center flex-shrink-0 flex items-center space-x-1.5 py-2 px-4 rounded-xl text-white bg-brand-dark transition-all duration-200">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                </svg>
-                <span class="text-xs font-title font-bold tracking-tight">Compra</span>
-            </button>
-
-            <!-- Botón Despensa (Alertas) -->
-            <button onclick="switchTab('alerts')" id="nav-alerts" class="snap-center flex-shrink-0 flex items-center space-x-1.5 py-2 px-4 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                </svg>
-                <span class="text-xs font-title font-bold tracking-tight">Despensa</span>
-            </button>
-
-            <!-- Botón Tuppers (Ventas y Control) -->
-            <button onclick="switchTab('tuppers')" id="nav-tuppers" class="snap-center flex-shrink-0 flex items-center space-x-1.5 py-2 px-4 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span class="text-xs font-title font-bold tracking-tight">Tuppers</span>
-            </button>
-
-            <!-- Botón Consumir Pronto -->
-            <button onclick="switchTab('expiring')" id="nav-expiring" class="snap-center flex-shrink-0 flex items-center space-x-1.5 py-2 px-4 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span class="text-xs font-title font-bold tracking-tight">¡Consumir!</span>
-            </button>
-
-            <!-- Botón Asistencia (Calendario Semanal) -->
-            <button onclick="switchTab('attendance')" id="nav-attendance" class="snap-center flex-shrink-0 flex items-center space-x-1.5 py-2 px-4 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-                <span class="text-xs font-title font-bold tracking-tight">Asistencia</span>
-            </button>
-
-            <!-- Botón Tickets -->
-            <button onclick="switchTab('tickets')" id="nav-tickets" class="snap-center flex-shrink-0 flex items-center space-x-1.5 py-2 px-4 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                <span class="text-xs font-title font-bold tracking-tight">Tickets</span>
-            </button>
-
-            <!-- Botón Nevera (Pizarra) -->
-            <button onclick="switchTab('planner')" id="nav-planner" class="snap-center flex-shrink-0 flex items-center space-x-1.5 py-2 px-4 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                </svg>
-                <span class="text-xs font-title font-bold tracking-tight">Nevera</span>
-            </button>
-
+    <!-- MENÚ DE NAVEGACIÓN INFERIOR -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-brand text-brand-pale border-t border-brand-dark shadow-2xl z-40">
+        <div id="nav-container" class="flex overflow-x-auto scrollbar-none py-2 px-3 space-x-1.5 items-center max-w-md mx-auto">
+            <button onclick="switchTab('shopping')" id="nav-shopping" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl text-white bg-brand-dark text-xs font-title font-bold">Compra</button>
+            <button onclick="switchTab('alerts')" id="nav-alerts" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Despensa</button>
+            <button onclick="switchTab('tuppers')" id="nav-tuppers" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Tuppers</button>
+            <button onclick="switchTab('expiring')" id="nav-expiring" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">¡Consumir!</button>
+            <button onclick="switchTab('attendance')" id="nav-attendance" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Asistencia</button>
+            <button onclick="switchTab('tickets')" id="nav-tickets" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Tickets</button>
+            <button onclick="switchTab('planner')" id="nav-planner" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Nevera</button>
         </div>
     </nav>
 
-    <!-- MOTOR LOGIC DE LA APP -->
-    <script>
-        const STATE = {
-            shoppingItems: JSON.parse(localStorage.getItem('fml_shoppingItems')) || [
-                { id: '1', name: 'Leche de vaca entera', note: 'Brick de tapón azul', completed: false, alertId: null },
-                { id: '2', name: 'Plátanos amarillos', note: 'Que no estén demasiado verdes', completed: false, alertId: null }
-            ],
-            alertButtons: JSON.parse(localStorage.getItem('fml_alertButtons')) || [
+    <!-- FIREBASE FIRESTORE SYNC LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbtChg-D24co76iVJTPOXlk9B5-KKQiHY",
+            authDomain: "la-nevera-4809a.firebaseapp.com",
+            projectId: "la-nevera-4809a",
+            storageBucket: "la-nevera-4809a.firebasestorage.app",
+            messagingSenderId: "877238751366",
+            appId: "1:877238751366:web:cda233c10b26b6ffaf8107",
+            measurementId: "G-QQ6D7C06SF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const familyDocRef = doc(db, "hogar", "datos_compartidos");
+
+        window.STATE = {
+            shoppingItems: [],
+            alertButtons: [
                 { id: 'a1', name: 'Leche', active: false },
                 { id: 'a2', name: 'Huevos', active: false },
                 { id: 'a3', name: 'Papel Higiénico', active: false },
                 { id: 'a4', name: 'Café molido', active: false }
             ],
-            expiringItems: JSON.parse(localStorage.getItem('fml_expiringItems')) || [
-                { id: 'e1', name: 'Filetes de ternera', note: 'Consumir hoy', urgency: 'high' },
-                { id: 'e2', name: 'Yogures naturales', note: 'Consumir esta semana', urgency: 'low' }
+            expiringItems: [],
+            tuppers: [],
+            familyMembers: [
+                { id: 'f1', name: 'Papá', weeklyAttendance: { lun: true, mar: true, mie: true, jue: true, vie: true, sab: true, dom: true } },
+                { id: 'f2', name: 'Mamá', weeklyAttendance: { lun: true, mar: true, mie: true, jue: true, vie: true, sab: true, dom: true } }
             ],
-            // Contabilidad de tupperware por cobrar, agrupados semanalmente
-            tuppers: JSON.parse(localStorage.getItem('fml_tuppers')) || [
-                { id: 't1', name: 'Lentejas caseras', qty: 4, price: 4.50, date: '2026-06-22', collected: false },
-                { id: 't2', name: 'Crema de verduras', qty: 3, price: 4.00, date: '2026-06-23', collected: true }
-            ],
-            // Estructura de presencia semanal para el calendario
-            familyMembers: JSON.parse(localStorage.getItem('fml_familyMembers')) || [
-                { id: 'f1', name: 'Papá', weeklyAttendance: {} },
-                { id: 'f2', name: 'Mamá', weeklyAttendance: {} },
-                { id: 'f3', name: 'Hijo', weeklyAttendance: {} }
-            ],
-            tickets: JSON.parse(localStorage.getItem('fml_tickets')) || [],
-            planner: JSON.parse(localStorage.getItem('fml_planner')) || {
-                lun: '', mar: '', mie: '', jue: '', vie: '', sab: '', dom: ''
-            },
-            // Configuración de Telegram (token y chat guardados en el móvil)
-            telegram: JSON.parse(localStorage.getItem('fml_telegram')) || {
-                token: '', chatId: '', enabled: false
-            },
-            // Histórico de cobros de tuppers ya liquidados
-            paymentsHistory: JSON.parse(localStorage.getItem('fml_paymentsHistory')) || []
+            tickets: [],
+            planner: { lun: '', mar: '', mie: '', jue: '', vie: '', sab: '', dom: '' }
         };
 
-        // Repara datos antiguos de LocalStorage para evitar errores (ej: familiares sin calendario)
-        function normalizeState() {
-            const DIAS_KEYS = ['lun','mar','mie','jue','vie','sab','dom'];
-            if (!Array.isArray(STATE.familyMembers)) STATE.familyMembers = [];
-            STATE.familyMembers.forEach(m => {
-                if (!m.weeklyAttendance || typeof m.weeklyAttendance !== 'object') {
-                    m.weeklyAttendance = {};
-                }
-                DIAS_KEYS.forEach(k => {
-                    const val = m.weeklyAttendance[k];
-                    if (val === true || val === false) {
-                        // Formato antiguo (un solo booleano) -> lo aplicamos a comida y cena
-                        m.weeklyAttendance[k] = { comida: val, cena: val };
-                    } else if (!val || typeof val !== 'object') {
-                        m.weeklyAttendance[k] = { comida: true, cena: true };
-                    } else {
-                        if (typeof val.comida !== 'boolean') val.comida = true;
-                        if (typeof val.cena !== 'boolean') val.cena = true;
-                    }
-                });
-            });
-            if (!Array.isArray(STATE.shoppingItems)) STATE.shoppingItems = [];
-            if (!Array.isArray(STATE.alertButtons)) STATE.alertButtons = [];
-            if (!Array.isArray(STATE.expiringItems)) STATE.expiringItems = [];
-            if (!Array.isArray(STATE.tuppers)) STATE.tuppers = [];
-            if (!Array.isArray(STATE.tickets)) STATE.tickets = [];
-            if (!Array.isArray(STATE.paymentsHistory)) STATE.paymentsHistory = [];
-            if (!STATE.telegram || typeof STATE.telegram !== 'object') STATE.telegram = { token: '', chatId: '', enabled: false };
-            if (!STATE.planner || typeof STATE.planner !== 'object') STATE.planner = { lun: '', mar: '', mie: '', jue: '', vie: '', sab: '', dom: '' };
-        }
-        normalizeState();
-
-        function persistData() {
-            localStorage.setItem('fml_shoppingItems', JSON.stringify(STATE.shoppingItems));
-            localStorage.setItem('fml_alertButtons', JSON.stringify(STATE.alertButtons));
-            localStorage.setItem('fml_expiringItems', JSON.stringify(STATE.expiringItems));
-            localStorage.setItem('fml_tuppers', JSON.stringify(STATE.tuppers));
-            localStorage.setItem('fml_familyMembers', JSON.stringify(STATE.familyMembers));
-            localStorage.setItem('fml_tickets', JSON.stringify(STATE.tickets));
-            localStorage.setItem('fml_planner', JSON.stringify(STATE.planner));
-            localStorage.setItem('fml_telegram', JSON.stringify(STATE.telegram));
-            localStorage.setItem('fml_paymentsHistory', JSON.stringify(STATE.paymentsHistory));
-        }
-
-        /* ==========================================
-           MOTOR DE TELEGRAM (Bot API directa)
-           ========================================== */
-        function openTelegramSettings() {
-            document.getElementById('tg-token').value = STATE.telegram.token || '';
-            document.getElementById('tg-chatid').value = STATE.telegram.chatId || '';
-            document.getElementById('tg-enabled').checked = !!STATE.telegram.enabled;
-            const modal = document.getElementById('tg-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-        function closeTelegramSettings() {
-            const modal = document.getElementById('tg-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-        function saveTelegramSettings() {
-            STATE.telegram.token = document.getElementById('tg-token').value.trim();
-            STATE.telegram.chatId = document.getElementById('tg-chatid').value.trim();
-            STATE.telegram.enabled = document.getElementById('tg-enabled').checked;
-            persistData();
-            updateTelegramDot();
-            closeTelegramSettings();
-            showToast("Telegram guardado", STATE.telegram.enabled ? "Los avisos se enviarán a Telegram." : "Telegram configurado (desactivado).");
-        }
-        function updateTelegramDot() {
-            const dot = document.getElementById('tg-dot');
-            if (STATE.telegram.enabled && STATE.telegram.token && STATE.telegram.chatId) {
-                dot.classList.remove('hidden');
+        onSnapshot(familyDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const cloudData = docSnap.data();
+                window.STATE = { ...window.STATE, ...cloudData };
+                renderAll();
             } else {
-                dot.classList.add('hidden');
+                persistData();
             }
-        }
-        // Envía un mensaje a Telegram usando la Bot API. Silencioso si no está configurado.
-        async function sendTelegram(text) {
-            const tg = STATE.telegram;
-            if (!tg.enabled || !tg.token || !tg.chatId) return false;
-            try {
-                const url = `https://api.telegram.org/bot${tg.token}/sendMessage`;
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: tg.chatId, text: text, parse_mode: 'HTML' })
-                });
-                const data = await res.json();
-                if (!data.ok) console.log('Telegram error:', data.description);
-                return data.ok;
-            } catch (e) {
-                console.log('Fallo al enviar a Telegram:', e);
-                return false;
-            }
-        }
-        async function testTelegram() {
-            const token = document.getElementById('tg-token').value.trim();
-            const chatId = document.getElementById('tg-chatid').value.trim();
-            if (!token || !chatId) { showToast("Faltan datos", "Rellena token y chat ID antes de probar."); return; }
-            // Guardamos temporalmente para poder probar
-            const backup = { ...STATE.telegram };
-            STATE.telegram = { token, chatId, enabled: true };
-            const ok = await sendTelegram('✅ <b>Compra Familiar</b>\nConexión de prueba correcta.');
-            STATE.telegram = backup;
-            showToast(ok ? "¡Funciona!" : "No se pudo enviar", ok ? "Revisa tu Telegram, ha llegado el mensaje." : "Revisa el token y el chat ID.");
-        }
+        });
 
-        window.addEventListener('load', () => {
-            normalizeState();
-            persistData();
+        window.persistData = async function() {
+            try {
+                await setDoc(familyDocRef, window.STATE);
+            } catch (error) {
+                console.error("Error al sincronizar:", error);
+            }
+        };
+
+        function renderAll() {
             renderShoppingList();
             renderAlerts();
             renderExpiringList();
@@ -696,1015 +327,276 @@
             renderFamily();
             renderTickets();
             loadPlanner();
-            updateTelegramDot();
-            
-            setTimeout(() => {
-                requestNotificationPermission(true);
-            }, 1200);
-        });
+        }
 
-        let notificationsAllowed = false;
-        
-        function requestNotificationPermission(silent = false) {
-            if (!('Notification' in window)) {
-                if (!silent) showToast("Aviso", "Este dispositivo no soporta notificaciones de escritorio.");
-                return;
-            }
-
-            Notification.requestPermission().then(permission => {
-                const dot = document.getElementById('bell-dot');
-                if (permission === 'granted') {
-                    notificationsAllowed = true;
-                    dot.classList.remove('hidden');
-                    if (!silent) {
-                        showToast("🔔 ¡Activadas!", "Recibirás avisos nativos en tu dispositivo.");
-                        new Notification("🚨 Lista Familiar", {
-                            body: "¡Avisos push configurados!",
-                            icon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236695ff'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/></svg>"
-                        });
-                    }
-                } else {
-                    notificationsAllowed = false;
-                    dot.classList.add('hidden');
-                    if (!silent) showToast("Aviso", "No has permitido las notificaciones.");
-                }
+        window.switchTab = function(tabId) {
+            ['shopping', 'alerts', 'tuppers', 'expiring', 'attendance', 'tickets', 'planner'].forEach(id => {
+                document.getElementById(`sec-${id}`).classList.add('hidden');
+                const btn = document.getElementById(`nav-${id}`);
+                btn.classList.remove('text-white', 'bg-brand-dark');
+                btn.classList.add('text-brand-pale');
             });
-        }
-
-        function sendSystemNotification(title, message) {
-            showToast(title, message);
-
-            if (notificationsAllowed && Notification.permission === 'granted') {
-                try {
-                    new Notification(`🚨 ${title}`, {
-                        body: message,
-                        icon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236695ff'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/></svg>"
-                    });
-                } catch (e) {
-                    console.log("Error de push nativo: ", e);
-                }
-            }
-        }
-
-        let toastTimeout;
-        function showToast(title, message) {
-            const toast = document.getElementById('toast');
-            const tTitle = document.getElementById('toast-title');
-            const tMsg = document.getElementById('toast-message');
-
-            tTitle.textContent = title;
-            tMsg.textContent = message;
-
-            toast.classList.remove('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                hideToast();
-            }, 4500);
-        }
-
-        function hideToast() {
-            const toast = document.getElementById('toast');
-            toast.classList.add('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
-            toast.classList.remove('translate-y-0', 'opacity-100');
-        }
-
-        // Navegación adaptada a las secciones agrupadas
-        function switchTab(tabId) {
-            document.getElementById('sec-shopping').classList.add('hidden');
-            document.getElementById('sec-alerts').classList.add('hidden');
-            document.getElementById('sec-tuppers').classList.add('hidden');
-            document.getElementById('sec-expiring').classList.add('hidden');
-            document.getElementById('sec-attendance').classList.add('hidden');
-            document.getElementById('sec-tickets').classList.add('hidden');
-            document.getElementById('sec-planner').classList.add('hidden');
-
             document.getElementById(`sec-${tabId}`).classList.remove('hidden');
-
-            const navButtons = ['shopping', 'alerts', 'tuppers', 'expiring', 'attendance', 'tickets', 'planner'];
-            navButtons.forEach(btn => {
-                const el = document.getElementById(`nav-${btn}`);
-                el.classList.remove('text-white', 'bg-brand-dark');
-                el.classList.add('text-brand-pale');
-            });
-
             const activeNav = document.getElementById(`nav-${tabId}`);
             activeNav.classList.remove('text-brand-pale');
             activeNav.classList.add('text-white', 'bg-brand-dark');
-
-            // Auto-scroll del menú táctil inferior para asegurar visibilidad
             activeNav.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
+        };
 
+        window.escapeHtml = function(s) {
+            return (s || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        };
 
-        /* ==========================================
-           SECCIÓN 1: LÓGICA DE LA LISTA DE LA COMPRA
-           ========================================== */
-
-        function renderShoppingList() {
+        // --- COMPRA ---
+        window.renderShoppingList = function() {
             const container = document.getElementById('shopping-list-container');
             container.innerHTML = '';
-
-            if (STATE.shoppingItems.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-10 bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-                        <div class="text-2xl mb-2">📋</div>
-                        <p class="font-title font-bold text-xs text-slate-900 uppercase">Sin pendientes</p>
-                        <p class="text-[10px] text-slate-400 mt-1">Todo comprado o lista vacía.</p>
-                    </div>
-                `;
+            if (!STATE.shoppingItems || STATE.shoppingItems.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 bg-white rounded-xl border border-slate-200 text-xs text-slate-400">Sin compras pendientes.</div>`;
                 return;
             }
-
             STATE.shoppingItems.forEach(item => {
-                const isCompleted = item.completed;
                 const card = document.createElement('div');
-                card.id = `shop-item-${item.id}`;
-                card.className = `flex items-center justify-between p-4 bg-white rounded-xl border transition-all duration-200 ${isCompleted ? 'border-brand-light/30 bg-brand/5' : 'border-slate-200 shadow-sm'}`;
-
+                card.className = "flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 shadow-sm";
                 card.innerHTML = `
-                    <div class="flex items-center space-x-3.5 flex-1 mr-2 cursor-pointer" onclick="toggleItemCompleted('${item.id}')">
-                        <!-- Checkbox gigante táctil -->
-                        <div class="w-7 h-7 rounded-lg flex items-center justify-center border-2 transition-all ${isCompleted ? 'bg-brand border-brand text-white scale-105' : 'border-slate-300 text-transparent bg-slate-50'}">
-                            <svg class="w-4 h-4 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <span class="text-xs font-semibold transition-all ${isCompleted ? 'line-through text-slate-400 font-normal' : 'text-black'}">${escapeHtml(item.name)}</span>
-                            ${item.note ? `<p class="text-[10px] text-slate-500 mt-0.5 leading-snug ${isCompleted ? 'opacity-40' : ''}">${escapeHtml(item.note)}</p>` : ''}
+                    <div class="flex items-center space-x-3.5 flex-1 cursor-pointer" onclick="deleteShoppingItem('${item.id}')">
+                        <div class="w-6 h-6 rounded-lg border-2 border-slate-300 bg-slate-50 flex items-center justify-center"></div>
+                        <div>
+                            <span class="text-xs font-semibold text-black">${escapeHtml(item.name)}</span>
+                            ${item.note ? `<p class="text-[10px] text-slate-500">${escapeHtml(item.note)}</p>` : ''}
                         </div>
                     </div>
-                    <!-- Borrar individual -->
-                    <button onclick="deleteShoppingItem('${item.id}')" class="text-slate-300 hover:text-slate-600 p-1.5 rounded-lg active:bg-slate-100 transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
-                    </button>
+                    <button onclick="deleteShoppingItem('${item.id}')" class="text-slate-300 hover:text-slate-600">✕</button>
                 `;
                 container.appendChild(card);
             });
-        }
+        };
 
-        function toggleItemCompleted(itemId) {
-            const item = STATE.shoppingItems.find(i => i.id === itemId);
-            if (item) {
-                item.completed = true;
-                persistData();
-                renderShoppingList();
-                
-                // Animación y eliminación automática a los 350ms
-                const card = document.getElementById(`shop-item-${itemId}`);
-                if (card) {
-                    card.classList.add('opacity-50', 'scale-95');
-                }
-                setTimeout(() => {
-                    deleteShoppingItem(itemId);
-                }, 350);
-            }
-        }
+        window.addManualProduct = function() {
+            const n = document.getElementById('new-product-name');
+            const note = document.getElementById('new-product-note');
+            if (!n.value.trim()) return;
+            STATE.shoppingItems.push({ id: Date.now().toString(), name: n.value.trim(), note: note.value.trim() || null, completed: false, alertId: null });
+            persistData();
+            n.value = ''; note.value = '';
+        };
 
-        function deleteShoppingItem(itemId) {
-            const item = STATE.shoppingItems.find(i => i.id === itemId);
+        window.deleteShoppingItem = function(id) {
+            const item = STATE.shoppingItems.find(i => i.id === id);
             if (item && item.alertId) {
-                const alertBtn = STATE.alertButtons.find(b => b.id === item.alertId);
-                if (alertBtn) {
-                    alertBtn.active = false;
-                    renderAlerts();
-                }
+                const btn = STATE.alertButtons.find(b => b.id === item.alertId);
+                if (btn) btn.active = false;
             }
-
-            STATE.shoppingItems = STATE.shoppingItems.filter(i => i.id !== itemId);
+            STATE.shoppingItems = STATE.shoppingItems.filter(i => i.id !== id);
             persistData();
-            renderShoppingList();
-        }
+        };
 
-        function addManualProduct() {
-            const nameInput = document.getElementById('new-product-name');
-            const noteInput = document.getElementById('new-product-note');
-
-            const name = nameInput.value.trim();
-            const note = noteInput.value.trim();
-
-            if (!name) {
-                showToast("Campo vacío", "Escribe el nombre del artículo.");
-                return;
-            }
-
-            const newItem = {
-                id: Date.now().toString(),
-                name: name,
-                note: note || null,
-                completed: false,
-                alertId: null
-            };
-
-            STATE.shoppingItems.push(newItem);
-            persistData();
-            renderShoppingList();
-
-            nameInput.value = '';
-            noteInput.value = '';
-            showToast("Guardado", `"${name}" en la lista.`);
-            sendTelegram(`🛒 <b>Nuevo en la lista de la compra</b>\n• ${name}${note ? `\n<i>${note}</i>` : ''}`);
-        }
-
-
-        /* ==========================================
-           SECCIÓN 2: LÓGICA DE LAS ALERTAS DE "QUEDA POCO"
-           ========================================== */
-
-        function renderAlerts() {
+        // --- DESPENSA ---
+        window.renderAlerts = function() {
             const grid = document.getElementById('alerts-grid');
-            const emptyMsg = document.getElementById('empty-alerts-msg');
             grid.innerHTML = '';
-
-            if (STATE.alertButtons.length === 0) {
-                emptyMsg.classList.remove('hidden');
-                return;
-            } else {
-                emptyMsg.classList.add('hidden');
-            }
-
-            STATE.alertButtons.forEach(btn => {
-                const isActive = btn.active;
-                const buttonCol = document.createElement('div');
-                buttonCol.className = "relative group";
-
-                buttonCol.innerHTML = `
-                    <button onclick="toggleAlertState('${btn.id}')" class="w-full text-left p-4 rounded-xl border transition-all duration-300 flex flex-col justify-between h-28 shadow-sm ${isActive ? 'bg-black border-black text-white' : 'bg-white border-slate-200 text-slate-900'}">
-                        <div class="text-[9px] font-bold tracking-widest uppercase flex items-center space-x-1.5 ${isActive ? 'text-brand-light' : 'text-slate-400'}">
-                            <span class="inline-block w-1.5 h-1.5 rounded-full ${isActive ? 'bg-brand animate-pulse' : 'bg-slate-300'}"></span>
-                            <span>${isActive ? 'Agotándose' : 'En despensa'}</span>
-                        </div>
-                        <div class="pr-5">
-                            <p class="font-title font-bold text-xs leading-tight break-words uppercase">${escapeHtml(btn.name)}</p>
-                            <p class="text-[8px] mt-1 font-semibold tracking-widest uppercase ${isActive ? 'text-slate-300' : 'text-slate-400'}">
-                                ${isActive ? 'A punto de agotarse' : 'Stock suficiente'}
-                            </p>
-                        </div>
+            (STATE.alertButtons || []).forEach(btn => {
+                const col = document.createElement('div');
+                col.className = "relative";
+                col.innerHTML = `
+                    <button onclick="toggleAlertState('${btn.id}')" class="w-full text-left p-4 rounded-xl border transition-all h-24 flex flex-col justify-between ${btn.active ? 'bg-black border-black text-white' : 'bg-white border-slate-200 text-slate-900'}">
+                        <span class="text-[9px] font-bold uppercase ${btn.active ? 'text-brand-light' : 'text-slate-400'}">${btn.active ? 'Agotándose' : 'En despensa'}</span>
+                        <p class="font-title font-bold text-xs uppercase">${escapeHtml(btn.name)}</p>
                     </button>
-                    <!-- Borrar botón permanente -->
-                    <button onclick="deleteAlertButton(event, '${btn.id}')" class="absolute top-2.5 right-2.5 p-1 rounded-full ${isActive ? 'text-slate-400 hover:text-white' : 'text-slate-300 hover:text-slate-600'} transition-all">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
+                    <button onclick="deleteAlertButton(event, '${btn.id}')" class="absolute top-2 right-2 p-1 text-slate-400">✕</button>
                 `;
-                grid.appendChild(buttonCol);
+                grid.appendChild(col);
             });
-        }
+        };
 
-        function toggleAlertState(btnId) {
-            const btn = STATE.alertButtons.find(b => b.id === btnId);
+        window.toggleAlertState = function(id) {
+            const btn = STATE.alertButtons.find(b => b.id === id);
             if (!btn) return;
-
             btn.active = !btn.active;
-
             if (btn.active) {
-                const exists = STATE.shoppingItems.some(item => item.alertId === btnId);
-                if (!exists) {
-                    STATE.shoppingItems.push({
-                        id: 'item_' + btnId,
-                        name: btn.name,
-                        note: "A punto de agotarse (Aviso rápido)",
-                        completed: false,
-                        alertId: btnId
-                    });
+                if (!STATE.shoppingItems.some(i => i.alertId === id)) {
+                    STATE.shoppingItems.push({ id: 'item_' + id, name: btn.name, note: "Aviso despensa", completed: false, alertId: id });
                 }
-                sendSystemNotification("¡Aviso de Alacena!", `Se está terminando: "${btn.name}". Añadido a la lista de compra.`);
-                sendTelegram(`🚨 <b>¡Aviso de la Nevera!</b>\nSe están terminando: <b>${btn.name}</b>.\n➕ Añadido a la lista de la compra.`);
             } else {
-                STATE.shoppingItems = STATE.shoppingItems.filter(item => item.alertId !== btnId);
-                showToast("Estado Actualizado", `"${btn.name}" se eliminó de la lista de compra.`);
+                STATE.shoppingItems = STATE.shoppingItems.filter(i => i.alertId !== id);
             }
-
             persistData();
-            renderAlerts();
-            renderShoppingList();
-        }
+        };
 
-        function deleteAlertButton(event, btnId) {
-            event.stopPropagation();
-            STATE.shoppingItems = STATE.shoppingItems.filter(item => item.alertId !== btnId);
-            STATE.alertButtons = STATE.alertButtons.filter(b => b.id !== btnId);
+        window.addNewAlertButton = function() {
+            const input = document.getElementById('new-alert-name');
+            if (!input.value.trim()) return;
+            STATE.alertButtons.push({ id: 'btn_' + Date.now(), name: input.value.trim(), active: false });
             persistData();
-            renderAlerts();
-            renderShoppingList();
-            showToast("Botonera", "Botón permanente eliminado.");
-        }
+            input.value = '';
+        };
 
-        function addNewAlertButton() {
-            const nameInput = document.getElementById('new-alert-name');
-            const name = nameInput.value.trim();
-
-            if (!name) {
-                showToast("Falta texto", "Escribe el nombre del alimento/producto.");
-                return;
-            }
-
-            const dupe = STATE.alertButtons.some(b => b.name.toLowerCase() === name.toLowerCase());
-            if (dupe) {
-                showToast("Duplicado", "Ya existe un botón con este nombre.");
-                return;
-            }
-
-            const newAlert = {
-                id: 'btn_' + Date.now().toString(),
-                name: name,
-                active: false
-            };
-
-            STATE.alertButtons.push(newAlert);
+        window.deleteAlertButton = function(e, id) {
+            e.stopPropagation();
+            STATE.alertButtons = STATE.alertButtons.filter(b => b.id !== id);
+            STATE.shoppingItems = STATE.shoppingItems.filter(i => i.alertId !== id);
             persistData();
-            renderAlerts();
+        };
 
-            nameInput.value = '';
-            showToast("Nuevo Botón", `Creado botón rápido de despensa para "${name}".`);
-        }
-
-
-        /* ==========================================
-           STREAMING_CHUNK: Coding financial logic and ledger math for Tuppers...
-           ========================================== */
-        /* ==========================================
-           SECCIÓN 3: CONTROL DE TUPPERS (FINANCIERO)
-           ========================================== */
-
-        // Obtener el rango de la semana (Lunes a Domingo) para agrupar tuppers
-        function getWeekRangeString(dateString) {
-            const date = new Date(dateString);
-            const day = date.getDay();
-            // Ajustar para obtener el lunes anterior (siendo domingo = 7, lunes = 1)
-            const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-            
-            const monday = new Date(date.setDate(diff));
-            const sunday = new Date(date.setDate(diff + 6));
-            
-            const options = { day: '2-digit', month: 'short' };
-            return `Semana: ${monday.toLocaleDateString('es-ES', options)} al ${sunday.toLocaleDateString('es-ES', options)}`;
-        }
-
-        function renderTuppers() {
+        // --- TUPPERS ---
+        window.renderTuppers = function() {
             const container = document.getElementById('tuppers-weeks-container');
             container.innerHTML = '';
-
-            // Calcular finanzas acumuladas
-            let pendingSum = 0;
-            let collectedSum = 0;
-
-            STATE.tuppers.forEach(t => {
-                const totalVal = t.qty * t.price;
-                if (t.collected) {
-                    collectedSum += totalVal;
-                } else {
-                    pendingSum += totalVal;
-                }
-            });
-
-            // Actualizar contadores del dashboard
-            document.getElementById('total-unpaid-tuppers').textContent = `${pendingSum.toFixed(2)} €`;
-            document.getElementById('total-paid-tuppers').textContent = `${collectedSum.toFixed(2)} €`;
-
-            if (STATE.tuppers.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8 bg-white rounded-xl border border-slate-200 p-4 shadow-sm text-slate-400 text-xs">
-                        No hay registros de tuppers creados para cobrar todavía.
+            let unpaid = 0, paid = 0;
+            (STATE.tuppers || []).forEach(t => {
+                const total = t.qty * t.price;
+                if (t.collected) paid += total; else unpaid += total;
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white text-xs";
+                row.innerHTML = `
+                    <div>
+                        <p class="font-bold uppercase ${t.collected ? 'line-through text-slate-400' : 'text-slate-900'}">${escapeHtml(t.name)}</p>
+                        <p class="text-[10px] text-slate-500">${t.qty} uds x ${t.price.toFixed(2)}€ = ${(t.qty * t.price).toFixed(2)}€</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="toggleTupper('${t.id}')" class="px-2 py-1 rounded text-[10px] font-bold ${t.collected ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}">
+                            ${t.collected ? 'Cobrado' : 'Pendiente'}
+                        </button>
+                        <button onclick="deleteTupper('${t.id}')" class="text-slate-300">✕</button>
                     </div>
                 `;
-                renderPaymentsHistory(container);
-                return;
-            }
-
-            // Agrupar tuppers por semana
-            const grouped = {};
-            STATE.tuppers.forEach(tupper => {
-                const weekKey = getWeekRangeString(tupper.date);
-                if (!grouped[weekKey]) {
-                    grouped[weekKey] = [];
-                }
-                grouped[weekKey].push(tupper);
+                container.appendChild(row);
             });
+            document.getElementById('total-unpaid-tuppers').textContent = `${unpaid.toFixed(2)} €`;
+            document.getElementById('total-paid-tuppers').textContent = `${paid.toFixed(2)} €`;
+        };
 
-            // Ordenar las semanas en orden cronológico inverso (la más reciente arriba)
-            const sortedWeekKeys = Object.keys(grouped).sort((a, b) => b.localeCompare(a));
+        window.addTupper = function() {
+            const n = document.getElementById('tupper-name');
+            const q = parseInt(document.getElementById('tupper-quantity').value) || 1;
+            const p = parseFloat(document.getElementById('tupper-price').value) || 0;
+            if (!n.value.trim()) return;
+            STATE.tuppers.push({ id: 'tup_' + Date.now(), name: n.value.trim(), qty: q, price: p, collected: false });
+            persistData();
+            n.value = '';
+        };
 
-            sortedWeekKeys.forEach(week => {
-                const weekSection = document.createElement('div');
-                weekSection.className = "bg-white rounded-xl border border-slate-200 p-4 shadow-sm space-y-2.5";
-                
-                let weekTotalUnpaid = 0;
-                let weekTotalPaid = 0;
+        window.toggleTupper = function(id) {
+            const t = STATE.tuppers.find(x => x.id === id);
+            if (t) { t.collected = !t.collected; persistData(); }
+        };
 
-                grouped[week].forEach(t => {
-                    const cost = t.qty * t.price;
-                    if (t.collected) {
-                        weekTotalPaid += cost;
-                    } else {
-                        weekTotalUnpaid += cost;
-                    }
-                });
+        window.deleteTupper = function(id) {
+            STATE.tuppers = STATE.tuppers.filter(x => x.id !== id);
+            persistData();
+        };
 
-                weekSection.innerHTML = `
-                    <div class="border-b border-slate-150 pb-2 flex justify-between items-center bg-slate-50 -mx-4 -mt-4 p-4 rounded-t-xl">
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-tight">${week}</h4>
-                            <p class="text-[9px] text-slate-400 font-semibold uppercase mt-0.5">Balance Semanal</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[9px] text-brand-dark font-bold">Por cobrar: ${weekTotalUnpaid.toFixed(2)}€</p>
-                            <p class="text-[9px] text-emerald-500 font-bold">Cobrado: ${weekTotalPaid.toFixed(2)}€</p>
-                        </div>
-                    </div>
-                    <div class="space-y-2 pt-1" id="week-items-${week.replace(/\s+/g, '')}">
-                        <!-- Items de la semana se inyectan abajo -->
-                    </div>
-                `;
-
-                container.appendChild(weekSection);
-                const itemsContainer = document.getElementById(`week-items-${week.replace(/\s+/g, '')}`);
-
-                grouped[week].forEach(tupper => {
-                    const row = document.createElement('div');
-                    row.className = `flex items-center justify-between p-3 rounded-lg border text-xs transition-all ${tupper.collected ? 'border-slate-100 bg-slate-50/50 text-slate-400' : 'border-slate-200 bg-white text-slate-900'}`;
-
-                    row.innerHTML = `
-                        <div class="flex-1 min-w-0 pr-2">
-                            <p class="font-bold uppercase truncate ${tupper.collected ? 'line-through' : ''}">${escapeHtml(tupper.name)}</p>
-                            <p class="text-[10px] text-slate-500 font-medium uppercase tracking-tight mt-0.5">
-                                Cantidad: ${tupper.qty} uds x ${tupper.price.toFixed(2)}€ = <span class="font-bold">${(tupper.qty * tupper.price).toFixed(2)}€</span>
-                            </p>
-                        </div>
-                        <div class="flex items-center space-x-2.5">
-                            <!-- Toggle Cobrado -->
-                            <button onclick="toggleTupperCollected('${tupper.id}')" class="p-2 rounded-lg border transition-all active:scale-90 ${tupper.collected ? 'bg-emerald-100 border-emerald-200 text-emerald-600' : 'bg-slate-100 border-slate-300 text-slate-600 hover:border-slate-400'}" title="Marcar Cobrado/Pendiente">
-                                ${tupper.collected ? '💵 Cobrado' : '⏳ Pendiente'}
-                            </button>
-                            <!-- Borrar -->
-                            <button onclick="deleteTupper('${tupper.id}')" class="text-slate-300 hover:text-red-500 p-1.5 rounded-lg transition-all active:scale-90">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    `;
-                    itemsContainer.appendChild(row);
-                });
+        // --- CONSUMIR ---
+        window.renderExpiringList = function() {
+            const c = document.getElementById('expiring-list-container');
+            c.innerHTML = '';
+            (STATE.expiringItems || []).forEach(item => {
+                const el = document.createElement('div');
+                el.className = "p-3 rounded-xl border border-amber-200 bg-amber-50/40 flex justify-between items-center text-xs cursor-pointer";
+                el.onclick = () => { STATE.expiringItems = STATE.expiringItems.filter(x => x.id !== item.id); persistData(); };
+                el.innerHTML = `<div><span class="font-bold uppercase">${escapeHtml(item.name)}</span><p class="text-[10px] text-slate-500">${item.note}</p></div><span>🍴</span>`;
+                c.appendChild(el);
             });
+        };
 
-            renderPaymentsHistory(container);
-        }
-
-        // Pinta el histórico de cobros ya realizados
-        function renderPaymentsHistory(container) {
-            if (!STATE.paymentsHistory || STATE.paymentsHistory.length === 0) return;
-
-            const wrap = document.createElement('div');
-            wrap.className = "mt-2 space-y-2";
-            wrap.innerHTML = `
-                <div class="flex items-center justify-between px-1 pt-2">
-                    <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-500">Histórico de Cobros</h3>
-                    <button onclick="clearPaymentsHistory()" class="text-[9px] text-slate-400 hover:text-red-500 font-bold uppercase">Vaciar</button>
-                </div>
-            `;
-
-            STATE.paymentsHistory.forEach(p => {
-                const card = document.createElement('div');
-                card.className = "bg-slate-50 rounded-xl border border-slate-200 p-3 flex items-center justify-between";
-                card.innerHTML = `
-                    <div class="min-w-0">
-                        <p class="text-xs font-bold text-slate-900">${p.dateLabel}</p>
-                        <p class="text-[10px] text-slate-500 mt-0.5">${p.count} uds · ${p.items.length} recetas</p>
-                    </div>
-                    <p class="text-sm font-bold text-emerald-600 whitespace-nowrap pl-2">${p.total.toFixed(2)} €</p>
-                `;
-                wrap.appendChild(card);
-            });
-
-            container.appendChild(wrap);
-        }
-
-        function clearPaymentsHistory() {
-            STATE.paymentsHistory = [];
+        window.addExpiringProduct = function() {
+            const n = document.getElementById('exp-product-name');
+            const u = document.querySelector('input[name="exp-urgency"]:checked')?.value || 'high';
+            if (!n.value.trim()) return;
+            STATE.expiringItems.push({ id: 'exp_' + Date.now(), name: n.value.trim(), note: u === 'high' ? 'Hoy' : (u === 'medium' ? 'Mañana' : 'Esta semana'), urgency: u });
             persistData();
-            renderTuppers();
-            showToast("Histórico vaciado", "Se ha borrado el historial de cobros.");
-        }
+            n.value = '';
+        };
 
-        function addTupper() {
-            const nameInput = document.getElementById('tupper-name');
-            const qtyInput = document.getElementById('tupper-quantity');
-            const priceInput = document.getElementById('tupper-price');
-
-            const name = nameInput.value.trim();
-            const qty = parseInt(qtyInput.value) || 1;
-            const price = parseFloat(priceInput.value) || 0;
-
-            if (!name) {
-                showToast("Campo vacío", "Escribe qué comida contiene el tupper.");
-                return;
-            }
-
-            if (qty <= 0 || price < 0) {
-                showToast("Datos incorrectos", "Introduce cantidad y precio de venta válidos.");
-                return;
-            }
-
-            // Registrar hoy
-            const today = new Date().toISOString().split('T')[0];
-
-            const newTupper = {
-                id: 'tup_' + Date.now().toString(),
-                name: name,
-                qty: qty,
-                price: price,
-                date: today,
-                collected: false
-            };
-
-            STATE.tuppers.push(newTupper);
-            persistData();
-            renderTuppers();
-
-            nameInput.value = '';
-            qtyInput.value = '1';
-            priceInput.value = '4.00';
-            showToast("Tupper acumulado", `Se han registrado ${qty} tuppers de "${name}".`);
-            sendTelegram(`🍲 <b>Tuppers registrados</b>\n${qty} x ${name} · ${price.toFixed(2)}€/ud = <b>${(qty*price).toFixed(2)}€</b>`);
-        }
-
-        // Realiza el cobro: pone ambos contadores a 0 y guarda el histórico
-        function cashOutTuppers() {
-            if (STATE.tuppers.length === 0) {
-                showToast("Nada que cobrar", "No hay tuppers registrados.");
-                return;
-            }
-            const pendingSum = STATE.tuppers.filter(t => !t.collected).reduce((s, t) => s + t.qty * t.price, 0);
-            const collectedSum = STATE.tuppers.filter(t => t.collected).reduce((s, t) => s + t.qty * t.price, 0);
-            const totalSum = pendingSum + collectedSum;
-
-            if (totalSum === 0) {
-                showToast("Nada que cobrar", "Los contadores ya están a cero.");
-                return;
-            }
-
-            // Guardar histórico del cobro
-            const record = {
-                id: 'pay_' + Date.now().toString(),
-                date: new Date().toISOString(),
-                dateLabel: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
-                total: totalSum,
-                pending: pendingSum,
-                collected: collectedSum,
-                count: STATE.tuppers.reduce((s, t) => s + t.qty, 0),
-                items: STATE.tuppers.map(t => ({ name: t.name, qty: t.qty, price: t.price }))
-            };
-            STATE.paymentsHistory.unshift(record);
-
-            // Vaciar tuppers -> ambos contadores a 0
-            STATE.tuppers = [];
-            persistData();
-            renderTuppers();
-
-            showToast("Cobro realizado", `Liquidados ${totalSum.toFixed(2)}€. Contadores a 0.`);
-            sendTelegram(`✅ <b>Cobro realizado</b>\nTotal liquidado: <b>${totalSum.toFixed(2)}€</b>\n📅 ${record.dateLabel}\nContadores reiniciados a 0.`);
-        }
-
-        function toggleTupperCollected(tupperId) {
-            const tupper = STATE.tuppers.find(t => t.id === tupperId);
-            if (!tupper) return;
-
-            tupper.collected = !tupper.collected;
-            persistData();
-            renderTuppers();
-            showToast("Balance Actualizado", `Tupper marcado como ${tupper.collected ? 'cobrado' : 'pendiente'}.`);
-        }
-
-        function deleteTupper(tupperId) {
-            STATE.tuppers = STATE.tuppers.filter(t => t.id !== tupperId);
-            persistData();
-            renderTuppers();
-            showToast("Liquidado", "Registro de tupper borrado.");
-        }
-
-
-        /* ==========================================
-           SECCIÓN 4: CONSUMIR PRONTO
-           ========================================== */
-
-        function renderExpiringList() {
-            const container = document.getElementById('expiring-list-container');
-            container.innerHTML = '';
-
-            if (STATE.expiringItems.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-6 bg-white rounded-xl border border-slate-200 p-4 shadow-sm text-slate-400 text-xs">
-                        No tienes alimentos frescos en riesgo de ponerse malos.
-                    </div>
-                `;
-                return;
-            }
-
-            STATE.expiringItems.forEach(item => {
-                const card = document.createElement('div');
-                card.id = `exp-item-${item.id}`;
-                
-                let urgencyBadge = '';
-                let urgencyColorClass = '';
-                
-                if (item.urgency === 'high') {
-                    urgencyBadge = '🔴 HOY MISMO';
-                    urgencyColorClass = 'border-red-200 bg-red-50/50 text-red-700';
-                } else if (item.urgency === 'medium') {
-                    urgencyBadge = '🟡 MAÑANA';
-                    urgencyColorClass = 'border-amber-200 bg-amber-50/50 text-amber-800';
-                } else {
-                    urgencyBadge = '🔵 ESTA SEMANA';
-                    urgencyColorClass = 'border-brand-light/40 bg-brand/5 text-brand-dark';
-                }
-
-                card.className = `flex items-center justify-between p-4 bg-white rounded-xl border shadow-sm transition-all duration-300 cursor-pointer ${urgencyColorClass}`;
-                card.setAttribute('onclick', `consumeExpiringItem('${item.id}')`);
-
-                card.innerHTML = `
-                    <div class="flex-1">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-900">${escapeHtml(item.name)}</span>
-                            <span class="text-[8px] px-1.5 py-0.5 rounded font-extrabold bg-white border">${urgencyBadge}</span>
-                        </div>
-                        <p class="text-[10px] text-slate-500 mt-1">Toca para marcar como consumido y retirar aviso</p>
-                    </div>
-                    <div class="p-1 bg-white rounded-lg border text-sm">
-                        🍴
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function addExpiringProduct() {
-            const nameInput = document.getElementById('exp-product-name');
-            const urgencyRadio = document.querySelector('input[name="exp-urgency"]:checked');
-
-            const name = nameInput.value.trim();
-            const urgency = urgencyRadio ? urgencyRadio.value : 'high';
-
-            if (!name) {
-                showToast("Campo vacío", "Escribe el nombre del alimento en riesgo.");
-                return;
-            }
-
-            let urgencyText = 'Consumir hoy';
-            if (urgency === 'medium') urgencyText = 'Consumir mañana';
-            if (urgency === 'low') urgencyText = 'Consumir esta semana';
-
-            const newItem = {
-                id: 'exp_' + Date.now().toString(),
-                name: name,
-                note: urgencyText,
-                urgency: urgency
-            };
-
-            STATE.expiringItems.push(newItem);
-            persistData();
-            renderExpiringList();
-
-            nameInput.value = '';
-            showToast("Registrado", `"${name}" marcado para consumir pronto.`);
-        }
-
-        function consumeExpiringItem(itemId) {
-            const card = document.getElementById(`exp-item-${itemId}`);
-            if (card) {
-                card.classList.add('opacity-40', 'scale-95');
-            }
-            setTimeout(() => {
-                STATE.expiringItems = STATE.expiringItems.filter(i => i.id !== itemId);
-                persistData();
-                renderExpiringList();
-                showToast("Consumido", "Retirado del listado de consumo preferente.");
-            }, 300);
-        }
-
-
-        /* ==========================================
-           STREAMING_CHUNK: Coding week-by-week attendance calendar grid...
-           ========================================== */
-        /* ==========================================
-           SECCIÓN 5: CONTROL DE ASISTENCIA FAMILIAR
-           ========================================== */
-
-        function renderFamily() {
+        // --- ASISTENCIA ---
+        window.renderFamily = function() {
             const container = document.getElementById('family-list-container');
             container.innerHTML = '';
-
-            if (STATE.familyMembers.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-6 bg-white rounded-xl border border-slate-200 p-4 shadow-sm text-slate-400 text-xs">
-                        No hay miembros familiares creados. ¡Añade los primeros arriba!
-                    </div>
-                `;
-                return;
-            }
-
-            STATE.familyMembers.forEach(member => {
+            const days = [{ k: 'lun', l: 'L' }, { k: 'mar', l: 'M' }, { k: 'mie', l: 'X' }, { k: 'jue', l: 'J' }, { k: 'vie', l: 'V' }, { k: 'sab', l: 'S' }, { k: 'dom', l: 'D' }];
+            (STATE.familyMembers || []).forEach(m => {
                 const card = document.createElement('div');
-                card.className = "p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-3 relative";
-
-                // Construcción de la botonera calendario semanal
-                const daysOfWeek = [
-                    { key: 'lun', label: 'Lun' },
-                    { key: 'mar', label: 'Mar' },
-                    { key: 'mie', label: 'Mié' },
-                    { key: 'jue', label: 'Jue' },
-                    { key: 'vie', label: 'Vie' },
-                    { key: 'sab', label: 'Sáb' },
-                    { key: 'dom', label: 'Dom' }
-                ];
-
-                let daysHtml = '';
-                daysOfWeek.forEach(day => {
-                    const att = (member.weeklyAttendance && member.weeklyAttendance[day.key]) || { comida: false, cena: false };
-                    daysHtml += `
-                        <div class="flex flex-col items-center space-y-1">
-                            <span class="text-[10px] uppercase font-bold text-slate-500 leading-none">${day.label}</span>
-                            <!-- Comida -->
-                            <button onclick="toggleMeal('${member.id}', '${day.key}', 'comida')" title="Comida"
-                                class="w-full flex flex-col items-center justify-center py-1.5 rounded-lg border transition-all active:scale-90 ${att.comida ? 'bg-brand border-brand text-white shadow-sm' : 'bg-slate-100 border-slate-200 text-slate-400'}">
-                                <span class="text-[11px] leading-none">🍴</span>
-                            </button>
-                            <!-- Cena -->
-                            <button onclick="toggleMeal('${member.id}', '${day.key}', 'cena')" title="Cena"
-                                class="w-full flex flex-col items-center justify-center py-1.5 rounded-lg border transition-all active:scale-90 ${att.cena ? 'bg-indigo-500 border-indigo-500 text-white shadow-sm' : 'bg-slate-100 border-slate-200 text-slate-400'}">
-                                <span class="text-[11px] leading-none">🌙</span>
-                            </button>
-                        </div>
-                    `;
-                });
-
+                card.className = "p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-3";
+                let daysHtml = days.map(d => `
+                    <button onclick="toggleWeeklyDay('${m.id}', '${d.k}')" class="py-2 px-1 rounded-lg border text-center ${m.weeklyAttendance[d.k] ? 'bg-brand border-brand text-white font-bold' : 'bg-slate-100 text-slate-400 line-through'}">
+                        <span class="text-[10px] block">${d.l}</span>
+                        <span class="text-xs">${m.weeklyAttendance[d.k] ? '🏠' : '❌'}</span>
+                    </button>
+                `).join('');
                 card.innerHTML = `
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold uppercase text-slate-900 tracking-wider">${escapeHtml(member.name)}</span>
-                        <!-- Eliminar familiar -->
-                        <button onclick="deleteFamilyMember('${member.id}')" class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 border border-red-100 transition-all active:scale-90">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            <span class="text-[9px] font-bold uppercase">Quitar</span>
-                        </button>
+                        <span class="text-xs font-bold uppercase">${escapeHtml(m.name)}</span>
+                        <button onclick="deleteFamilyMember('${m.id}')" class="text-slate-300">✕</button>
                     </div>
-
-                    <div class="grid grid-cols-7 gap-1.5">
-                        ${daysHtml}
-                    </div>
+                    <div class="grid grid-cols-7 gap-1.5">${daysHtml}</div>
                 `;
                 container.appendChild(card);
             });
+        };
 
-            updateTodaySummary();
-        }
+        window.addFamilyMember = function() {
+            const n = document.getElementById('new-member-name');
+            if (!n.value.trim()) return;
+            STATE.familyMembers.push({ id: 'fam_' + Date.now(), name: n.value.trim(), weeklyAttendance: { lun: true, mar: true, mie: true, jue: true, vie: true, sab: true, dom: true } });
+            persistData();
+            n.value = '';
+        };
 
-        // Devuelve la clave del día actual (lun..dom)
-        function getTodayKey() {
-            const map = ['dom', 'lun', 'mar', 'mie', 'jue', 'vie', 'sab'];
-            return map[new Date().getDay()];
-        }
-        const DAY_NAMES = { lun: 'Lunes', mar: 'Martes', mie: 'Miércoles', jue: 'Jueves', vie: 'Viernes', sab: 'Sábado', dom: 'Domingo' };
+        window.toggleWeeklyDay = function(id, d) {
+            const m = STATE.familyMembers.find(f => f.id === id);
+            if (m) { m.weeklyAttendance[d] = !m.weeklyAttendance[d]; persistData(); }
+        };
 
-        // Actualiza el panel "Hoy en casa" (comida y cena)
-        function updateTodaySummary() {
-            const key = getTodayKey();
-            const labelEl = document.getElementById('today-day-label');
-            if (!labelEl) return;
-            labelEl.textContent = DAY_NAMES[key];
+        window.deleteFamilyMember = function(id) {
+            STATE.familyMembers = STATE.familyMembers.filter(f => f.id !== id);
+            persistData();
+        };
 
-            const comen = STATE.familyMembers.filter(m => m.weeklyAttendance[key] && m.weeklyAttendance[key].comida);
-            const cenan = STATE.familyMembers.filter(m => m.weeklyAttendance[key] && m.weeklyAttendance[key].cena);
+        window.resetAttendanceWeek = function() {
+            STATE.familyMembers.forEach(m => { m.weeklyAttendance = { lun: true, mar: true, mie: true, jue: true, vie: true, sab: true, dom: true }; });
+            persistData();
+        };
 
-            document.getElementById('today-lunch-count').textContent = comen.length;
-            document.getElementById('today-lunch-names').textContent = comen.length ? comen.map(m => m.name).join(', ') : 'Nadie';
-            document.getElementById('today-dinner-count').textContent = cenan.length;
-            document.getElementById('today-dinner-names').textContent = cenan.length ? cenan.map(m => m.name).join(', ') : 'Nadie';
-        }
-
-        // Envía a Telegram el recuento de hoy (comida y cena)
-        function notifyTodayAttendance() {
-            const key = getTodayKey();
-            const comen = STATE.familyMembers.filter(m => m.weeklyAttendance[key] && m.weeklyAttendance[key].comida);
-            const cenan = STATE.familyMembers.filter(m => m.weeklyAttendance[key] && m.weeklyAttendance[key].cena);
-            const msg = `🍽️ <b>Hoy en casa (${DAY_NAMES[key]})</b>\n\n` +
-                `🍴 <b>Comida (${comen.length}):</b> ${comen.length ? comen.map(m => m.name).join(', ') : '—'}\n` +
-                `🌙 <b>Cena (${cenan.length}):</b> ${cenan.length ? cenan.map(m => m.name).join(', ') : '—'}`;
-            sendTelegram(msg).then(ok => {
-                showToast(ok ? "Enviado" : "No enviado", ok ? "Recuento de hoy enviado a Telegram." : "Configura Telegram en Ajustes (⚙️).");
+        // --- PIZARRA Y TICKETS ---
+        window.loadPlanner = function() {
+            ['lun', 'mar', 'mie', 'jue', 'vie', 'sab', 'dom'].forEach(d => {
+                const el = document.getElementById(`plan-${d}`);
+                if (el && STATE.planner) el.value = STATE.planner[d] || '';
             });
-        }
+        };
 
-        function addFamilyMember() {
-            const nameInput = document.getElementById('new-member-name');
-            const name = nameInput.value.trim();
-
-            if (!name) {
-                showToast("Escribe un nombre", "Introduce el nombre del familiar.");
-                return;
-            }
-
-            const dupe = STATE.familyMembers.some(f => f.name.toLowerCase() === name.toLowerCase());
-            if (dupe) {
-                showToast("Familiar duplicado", "Ya hay un miembro con ese nombre.");
-                return;
-            }
-
-            const newMember = {
-                id: 'fam_' + Date.now().toString(),
-                name: name,
-                weeklyAttendance: {
-                    lun: { comida: true, cena: true }, mar: { comida: true, cena: true },
-                    mie: { comida: true, cena: true }, jue: { comida: true, cena: true },
-                    vie: { comida: true, cena: true }, sab: { comida: true, cena: true },
-                    dom: { comida: true, cena: true }
-                }
-            };
-
-            STATE.familyMembers.push(newMember);
-            persistData();
-            renderFamily();
-
-            nameInput.value = '';
-            showToast("Guardado", `Se ha añadido a "${name}" al calendario semanal.`);
-        }
-
-        // Alterna comida o cena de un día concreto
-        function toggleMeal(memberId, dayKey, meal) {
-            const member = STATE.familyMembers.find(f => f.id === memberId);
-            if (!member) return;
-            if (!member.weeklyAttendance[dayKey]) member.weeklyAttendance[dayKey] = { comida: true, cena: true };
-
-            member.weeklyAttendance[dayKey][meal] = !member.weeklyAttendance[dayKey][meal];
-            persistData();
-            renderFamily();
-
-            const mealText = meal === 'comida' ? 'Comida' : 'Cena';
-            const stateText = member.weeklyAttendance[dayKey][meal] ? 'en casa' : 'fuera';
-            showToast("Asistencia Actualizada", `${member.name}: ${mealText} ${DAY_NAMES[dayKey]} - ${stateText}.`);
-        }
-
-        function deleteFamilyMember(memberId) {
-            const member = STATE.familyMembers.find(f => f.id === memberId);
-            const nombre = member ? member.name : 'este familiar';
-            if (!confirm(`¿Quitar a ${nombre} del calendario de asistencia?`)) return;
-
-            STATE.familyMembers = STATE.familyMembers.filter(f => f.id !== memberId);
-            persistData();
-            renderFamily();
-            showToast("Familiar borrado", "Miembro familiar retirado del calendario.");
-        }
-
-        function resetAttendanceWeek() {
-            STATE.familyMembers.forEach(member => {
-                member.weeklyAttendance = {
-                    lun: { comida: true, cena: true }, mar: { comida: true, cena: true },
-                    mie: { comida: true, cena: true }, jue: { comida: true, cena: true },
-                    vie: { comida: true, cena: true }, sab: { comida: true, cena: true },
-                    dom: { comida: true, cena: true }
-                };
-            });
-            persistData();
-            renderFamily();
-            showToast("Nueva Semana Lista", "Se han restablecido los calendarios (todos comen y cenan en casa).");
-        }
-
-
-        /* ==========================================
-           SECCIÓN 6: CAJÓN DIGITAL DE TICKETS
-           ========================================== */
-
-        function renderTickets() {
-            const gallery = document.getElementById('tickets-gallery');
-            const emptyMsg = document.getElementById('empty-tickets-msg');
-            gallery.innerHTML = '';
-
-            if (STATE.tickets.length === 0) {
-                emptyMsg.classList.remove('hidden');
-                return;
-            } else {
-                emptyMsg.classList.add('hidden');
-            }
-
-            STATE.tickets.forEach(ticket => {
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-xl p-3 border border-slate-200 shadow-sm flex flex-col space-y-2 relative";
-
-                card.innerHTML = `
-                    <div class="relative group rounded-lg overflow-hidden aspect-[3/4] bg-slate-100 cursor-pointer border border-slate-200" onclick="openLightbox('${ticket.image}', '${ticket.date}')">
-                        <img src="${ticket.image}" alt="Ticket" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all"></div>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-[9px] font-semibold text-slate-500">${ticket.date}</span>
-                        <button onclick="deleteTicket('${ticket.id}')" class="text-slate-400 hover:text-slate-800 p-1 rounded-lg transition-all">
-                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
-                    </div>
-                `;
-                gallery.appendChild(card);
-            });
-        }
-
-        function handleTicketUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
-
-                    const MAX_WIDTH = 800;
-                    if (width > MAX_WIDTH) {
-                        height = Math.round((height * MAX_WIDTH) / width);
-                        width = MAX_WIDTH;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const base64Url = canvas.toDataURL('image/jpeg', 0.75);
-
-                    const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-                    const formattedDate = new Date().toLocaleDateString('es-ES', options);
-
-                    const newTicket = {
-                        id: Date.now().toString(),
-                        date: formattedDate,
-                        image: base64Url
-                    };
-
-                    try {
-                        STATE.tickets.unshift(newTicket);
-                        persistData();
-                        renderTickets();
-                        showToast("Archivado", "Ticket guardado en la galería.");
-                    } catch (err) {
-                        showToast("Memoria Llena", "Límite de memoria superado. Borra fotos antiguas.");
-                        console.error(err);
-                    }
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function deleteTicket(ticketId) {
-            STATE.tickets = STATE.tickets.filter(t => t.id !== ticketId);
-            persistData();
-            renderTickets();
-            showToast("Bandeja", "Ticket eliminado.");
-        }
-
-        function openLightbox(base64Image, dateStr) {
-            const lightbox = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            const date = document.getElementById('lightbox-date');
-
-            img.src = base64Image;
-            date.textContent = `Guardado: ${dateStr}`;
-            lightbox.classList.remove('hidden');
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.add('hidden');
-        }
-
-
-        /* ==========================================
-           SECCIÓN 7: PLANIFICADOR "IMÁN DE NEVERA"
-           ========================================== */
-
-        function loadPlanner() {
-            const days = ['lun', 'mar', 'mie', 'jue', 'vie', 'sab', 'dom'];
-            days.forEach(day => {
-                const el = document.getElementById(`plan-${day}`);
-                if (el) el.value = STATE.planner[day] || '';
-            });
-        }
-
-        function savePlanner(day, text) {
+        window.savePlanner = function(day, text) {
+            if (!STATE.planner) STATE.planner = {};
             STATE.planner[day] = text;
             persistData();
-        }
+        };
 
-        function escapeHtml(unsafe) {
-            return unsafe
-                 .replace(/&/g, "&amp;")
-                 .replace(/</g, "&lt;")
-                 .replace(/>/g, "&gt;")
-                 .replace(/"/g, "&quot;")
-                 .replace(/'/g, "&#039;");
-        }
+        window.renderTickets = function() {
+            const g = document.getElementById('tickets-gallery');
+            g.innerHTML = '';
+            (STATE.tickets || []).forEach(t => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-2 rounded-xl border border-slate-200";
+                div.innerHTML = `<img src="${t.image}" class="aspect-square object-cover rounded-lg w-full mb-1"><button onclick="deleteTicket('${t.id}')" class="text-[10px] text-red-500 w-full text-center">Borrar</button>`;
+                g.appendChild(div);
+            });
+            document.getElementById('empty-tickets-msg').classList.toggle('hidden', (STATE.tickets || []).length > 0);
+        };
+
+        window.handleTicketUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                STATE.tickets.unshift({ id: Date.now().toString(), image: e.target.result });
+                persistData();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.deleteTicket = function(id) {
+            STATE.tickets = STATE.tickets.filter(x => x.id !== id);
+            persistData();
+        };
     </script>
 </body>
 </html>
