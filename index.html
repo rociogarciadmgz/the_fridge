@@ -3,11 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lista Familiar Inteligente</title>
+    
+    <!-- Configuración PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="The Fridge">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3724/3724788.png">
+    <meta name="theme-color" content="#000000">
+    <title>The Fridge</title>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -24,6 +34,11 @@
                             dark: '#4d7be6',
                             light: '#94b3ff',
                             pale: '#d6e2ff',
+                        },
+                        accent: {
+                            DEFAULT: '#ff5277',
+                            light: '#ff859f',
+                            dark: '#e03e62',
                         }
                     }
                 }
@@ -35,34 +50,32 @@
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-        .scrollbar-none::-webkit-scrollbar { display: none; }
-        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="h-full font-sans antialiased text-slate-900 flex flex-col no-select bg-slate-50">
 
-    <!-- CABECERA DE LA APP -->
+    <!-- CABECERA -->
     <header class="bg-black text-white shadow-md sticky top-0 z-40 border-b border-slate-900">
-        <div class="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
+        <div class="max-w-md mx-auto px-5 py-3.5 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="bg-brand text-white p-2 rounded-xl shadow-md">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
                 <div>
-                    <h1 class="font-title font-bold text-sm leading-tight tracking-tight">Compra Familiar</h1>
-                    <p class="text-[9px] text-slate-400 font-medium tracking-widest uppercase">Mono System v4.0 (Cloud)</p>
+                    <h1 class="font-title font-bold text-sm leading-tight tracking-tight">The Fridge</h1>
+                    <p class="text-[9px] text-slate-400 font-medium tracking-widest uppercase">Sistema Familiar v4.0</p>
                 </div>
             </div>
             
             <button id="notification-bell" onclick="requestNotificationPermission()" class="relative p-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white transition-all active:scale-95">
-                <span id="bell-dot" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-brand rounded-full hidden animate-pulse"></span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                <span id="bell-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand rounded-full hidden animate-pulse"></span>
+                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
             </button>
         </div>
     </header>
 
-    <!-- TOAST DE NOTIFICACIONES -->
-    <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-sm bg-black text-white rounded-xl p-4 shadow-2xl flex items-start space-x-3 transition-all duration-300 translate-y-[-150%] opacity-0 pointer-events-none border border-slate-800">
+    <!-- TOAST -->
+    <div id="toast" class="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-sm bg-black text-white rounded-xl p-4 shadow-2xl flex items-start space-x-3 transition-all duration-300 translate-y-[-150%] opacity-0 pointer-events-none border border-slate-800">
         <div class="bg-brand text-white p-2 rounded-lg mt-0.5">ℹ️</div>
         <div class="flex-1">
             <h4 class="font-title font-bold text-xs text-brand-light uppercase tracking-wider" id="toast-title">Aviso</h4>
@@ -73,210 +86,294 @@
     <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 overflow-y-auto pb-24 max-w-md w-full mx-auto px-4 pt-5">
         
-        <!-- SECCIÓN 1: COMPRA -->
-        <section id="sec-shopping" class="space-y-5">
-            <div>
-                <h2 class="font-title font-extrabold text-lg text-black">Lista de hoy</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Pulsa un artículo para meterlo al carro y borrarlo</p>
-            </div>
-            <div id="shopping-list-container" class="space-y-2.5"></div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
-                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Añadir producto</h3>
-                <div class="space-y-2">
-                    <input type="text" id="new-product-name" placeholder="Ej: Manzanas, Pan..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
-                    <input type="text" id="new-product-note" placeholder="Nota opcional (Ej: Bolsa grande...)" class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
-                    <button onclick="addManualProduct()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all shadow-sm">Añadir a la lista</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 2: DESPENSA / ALERTAS -->
-        <section id="sec-alerts" class="space-y-5 hidden">
-            <div>
-                <h2 class="font-title font-extrabold text-lg text-black">Control de Despensa</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Controla qué se está acabando para comprarlo ya</p>
-            </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
-                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Crear botón de aviso permanente</h3>
-                <div class="flex space-x-2">
-                    <input type="text" id="new-alert-name" placeholder="Ej: Leche, Café, Papel..." class="flex-1 px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
-                    <button onclick="addNewAlertButton()" class="px-4 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">Crear</button>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
-                <div id="alerts-grid" class="grid grid-cols-2 gap-3"></div>
-                <div id="empty-alerts-msg" class="text-center py-8 text-slate-400 text-xs hidden">No tienes botones creados.</div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 3: TUPPERS -->
-        <section id="sec-tuppers" class="space-y-5 hidden">
-            <div>
-                <h2 class="font-title font-extrabold text-lg text-black">Control de Tuppers (€)</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Control de producción y cobros</p>
-            </div>
-            <div class="bg-black text-white rounded-2xl p-4 shadow-md border border-slate-900 grid grid-cols-2 gap-2 text-center">
-                <div class="border-r border-slate-800 pr-1">
-                    <p class="text-[9px] uppercase tracking-wider text-slate-400">Pendiente Cobrar</p>
-                    <p id="total-unpaid-tuppers" class="text-lg font-bold text-brand-light">0.00 €</p>
+        <!-- SECCIÓN 1: PLANIFICADOR (MENÚ SEMANAL) -->
+        <section id="sec-planner" class="space-y-3">
+            <div class="flex items-center space-x-3 pb-3 border-b border-slate-200">
+                <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                 </div>
                 <div>
-                    <p class="text-[9px] uppercase tracking-wider text-slate-400">Cobrado</p>
-                    <p id="total-paid-tuppers" class="text-lg font-bold text-emerald-400">0.00 €</p>
+                    <h2 class="font-title font-extrabold text-base text-slate-900 leading-tight">Menú Semanal</h2>
+                    <p class="text-[10px] text-slate-500 mt-0.5">Planificación de Comida (☀️) y Cena (🌙)</p>
                 </div>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
-                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Registrar Tupper</h3>
-                <div class="space-y-2">
-                    <input type="text" id="tupper-name" placeholder="Ej: Lentejas, Croquetas..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
-                    <div class="grid grid-cols-2 gap-2">
+
+            <div class="bg-slate-200 rounded-2xl p-2.5 shadow-inner border border-slate-300 relative overflow-hidden">
+                <div class="grid grid-cols-2 gap-2 relative z-10">
+                    
+                    <!-- LUNES -->
+                    <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1">
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b pb-0.5 text-center">Lunes</h3>
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 block mb-1">Cantidad</label>
-                            <input type="number" id="tupper-quantity" min="1" value="1" class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
+                            <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
+                            <textarea oninput="savePlanner('lun', 'comida', this.value)" id="plan-lun-comida" placeholder="Añadir..." class="w-full bg-transparent border-b focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 block mb-1">Precio (€)</label>
-                            <input type="number" id="tupper-price" min="0" step="0.10" value="4.00" class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
+                            <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
+                            <textarea oninput="savePlanner('lun', 'cena', this.value)" id="plan-lun-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
                         </div>
                     </div>
-                    <button onclick="addTupper()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">Registrar</button>
+
+                    <!-- MARTES -->
+                    <div class="bg-brand/5 rounded-xl p-2 shadow-sm border border-brand/20 relative pt-4 space-y-1">
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-brand-dark border-b pb-0.5 text-center">Martes</h3>
+                        <div>
+                            <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
+                            <textarea oninput="savePlanner('mar', 'comida', this.value)" id="plan-mar-comida" placeholder="Añadir..." class="w-full bg-transparent border-b focus:outline-none text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                        </div>
+                        <div>
+                            <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
+                            <textarea oninput="savePlanner('mar', 'cena', this.value)" id="plan-mar-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- MIÉRCOLES -->
+                    <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1">
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b pb-0.5 text-center">Miércoles</h3>
+                        <div>
+                            <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
+                            <textarea oninput="savePlanner('mie', 'comida', this.value)" id="plan-mie-comida" placeholder="Añadir..." class="w-full bg-transparent border-b focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                        </div>
+                        <div>
+                            <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
+                            <textarea oninput="savePlanner('mie', 'cena', this.value)" id="plan-mie-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- JUEVES -->
+                    <div class="bg-brand/5 rounded-xl p-2 shadow-sm border border-brand/20 relative pt-4 space-y-1">
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-brand-dark border-b pb-0.5 text-center">Jueves</h3>
+                        <div>
+                            <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
+                            <textarea oninput="savePlanner('jue', 'comida', this.value)" id="plan-jue-comida" placeholder="Añadir..." class="w-full bg-transparent border-b focus:outline-none text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                        </div>
+                        <div>
+                            <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
+                            <textarea oninput="savePlanner('jue', 'cena', this.value)" id="plan-jue-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-brand-dark mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- VIERNES -->
+                    <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1 col-span-2">
+                        <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full text-[5px] text-slate-400 font-bold flex items-center justify-center">●</div>
+                        <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b pb-0.5 text-center">Viernes</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <span class="text-[8px] font-bold text-amber-700 uppercase">☀️ Comida</span>
+                                <textarea oninput="savePlanner('vie', 'comida', this.value)" id="plan-vie-comida" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            </div>
+                            <div>
+                                <span class="text-[8px] font-bold text-indigo-700 uppercase">🌙 Cena</span>
+                                <textarea oninput="savePlanner('vie', 'cena', this.value)" id="plan-vie-cena" placeholder="Añadir..." class="w-full bg-transparent border-none focus:outline-none text-[10px] text-slate-800 mt-0.5 resize-none h-7 p-0 leading-tight"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <div id="tuppers-weeks-container" class="space-y-2"></div>
         </section>
 
-        <!-- SECCIÓN 4: CONSUMIR PRONTO -->
-        <section id="sec-expiring" class="space-y-5 hidden">
-            <div>
-                <h2 class="font-title font-extrabold text-lg text-black">Consumir Pronto</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Evita que la comida se eche a perder</p>
+        <!-- SECCIÓN 2: COMPRA -->
+        <section id="sec-shopping" class="space-y-5 hidden">
+            <div class="flex items-center space-x-3 pb-3 border-b border-slate-200">
+                <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                </div>
+                <div>
+                    <h2 class="font-title font-extrabold text-base text-slate-900 leading-tight">Lista de la Compra</h2>
+                    <p class="text-[10px] text-slate-500 mt-0.5">Pulsa un producto para tacharlo y meterlo al carro</p>
+                </div>
             </div>
+
+            <div id="shopping-list-container" class="space-y-2.5"></div>
+
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
+                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Añadir producto a la lista</h3>
+                <div class="space-y-2">
+                    <input type="text" id="new-product-name" placeholder="Ej: Manzanas, Pan, Leche..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
+                    <input type="text" id="new-product-note" placeholder="Nota opcional (Ej: Verdes, desnatada...)" class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
+                    <button onclick="addManualProduct()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+                        <span>Añadir a la lista</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CADUCIDAD -->
+        <section id="sec-alerts" class="space-y-5 hidden">
+            <div class="flex items-center space-x-3 pb-3 border-b border-slate-200">
+                <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div>
+                    <h2 class="font-title font-extrabold text-base text-slate-900 leading-tight">Consumir Pronto</h2>
+                    <p class="text-[10px] text-slate-500 mt-0.5">Evita que la comida se eche a perder</p>
+                </div>
+            </div>
+
             <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
                 <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Añadir alimento en riesgo</h3>
                 <div class="space-y-2">
-                    <input type="text" id="exp-product-name" placeholder="Ej: Carne picada, Yogures..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
+                    <input type="text" id="exp-product-name" placeholder="Ej: Carne picada, Yogures..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
+                    
                     <div class="grid grid-cols-3 gap-2">
-                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border bg-slate-50 cursor-pointer text-center">
+                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer text-center">
                             <input type="radio" name="exp-urgency" value="high" checked class="accent-red-600 mb-1">
-                            <span class="text-[8px] font-bold text-red-600">HOY</span>
+                            <span class="text-[8px] font-bold text-red-600">HOY MISMO</span>
                         </label>
-                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border bg-slate-50 cursor-pointer text-center">
+                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer text-center">
                             <input type="radio" name="exp-urgency" value="medium" class="accent-amber-500 mb-1">
                             <span class="text-[8px] font-bold text-amber-600">MAÑANA</span>
                         </label>
-                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border bg-slate-50 cursor-pointer text-center">
+                        <label class="flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer text-center">
                             <input type="radio" name="exp-urgency" value="low" class="accent-brand mb-1">
-                            <span class="text-[8px] font-bold text-brand-dark">SEMANA</span>
+                            <span class="text-[8px] font-bold text-brand-dark">ESTA SEMANA</span>
                         </label>
                     </div>
-                    <button onclick="addExpiringProduct()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">Guardar aviso</button>
+
+                    <button onclick="addExpiringProduct()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+                        <span>Añadir alerta</span>
+                    </button>
                 </div>
             </div>
+
             <div id="expiring-list-container" class="space-y-2.5"></div>
+        </section>
+
+        <!-- SECCIÓN 4: TUPPERS -->
+        <section id="sec-tuppers" class="space-y-5 hidden">
+            <div class="flex items-center space-x-3 pb-3 border-b border-slate-200">
+                <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div>
+                    <h2 class="font-title font-extrabold text-base text-slate-900 leading-tight">Control de Tuppers (€)</h2>
+                    <p class="text-[10px] text-slate-500 mt-0.5">Control de producción y cobros</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 grid grid-cols-2 gap-2 text-center">
+                <div class="border-r border-slate-200 pr-1">
+                    <p class="text-[9px] uppercase tracking-wider font-bold text-slate-500">Pendiente Cobrar</p>
+                    <p id="total-unpaid-tuppers" class="text-lg font-bold text-accent">0.00 €</p>
+                </div>
+                <div>
+                    <p class="text-[9px] uppercase tracking-wider font-bold text-slate-500">Cobrado este Mes</p>
+                    <p id="total-paid-tuppers" class="text-lg font-bold text-emerald-600">0.00 €</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
+                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Registrar Tuppers Hechos</h3>
+                <div class="space-y-2">
+                    <input type="text" id="tupper-name" placeholder="Ej: Lentejas, Croquetas..." class="w-full px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-500 block mb-1">Cantidad</label>
+                            <input type="number" id="tupper-quantity" min="1" max="100" value="1" class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-500 block mb-1">Precio Unitario (€)</label>
+                            <input type="number" id="tupper-price" min="0" step="0.10" value="4.00" class="w-full px-3 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
+                        </div>
+                    </div>
+
+                    <button onclick="addTupper()" class="w-full py-3 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+                        <span>Registrar Tupper</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="tuppers-weeks-container" class="space-y-2"></div>
         </section>
 
         <!-- SECCIÓN 5: ASISTENCIA -->
         <section id="sec-attendance" class="space-y-5 hidden">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="font-title font-extrabold text-lg text-black">Asistencia</h2>
-                    <p class="text-[10px] text-slate-500 mt-0.5">Control semanal de quién come en casa</p>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="font-title font-extrabold text-base text-slate-900 leading-tight">Asistencia Familiar</h2>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Control de Comida (☀️) y Cena (🌙)</p>
+                    </div>
                 </div>
-                <button onclick="resetAttendanceWeek()" class="px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-[9px] font-bold border border-slate-300">Reiniciar</button>
+                <button onclick="resetAttendanceWeek()" class="px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-[9px] font-bold border border-slate-200 hover:bg-slate-200">
+                    Reiniciar
+                </button>
             </div>
+
             <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
+                <h3 class="font-title font-bold text-xs uppercase tracking-wide text-slate-900">Añadir familiar</h3>
                 <div class="flex space-x-2">
-                    <input type="text" id="new-member-name" placeholder="Nombre familiar..." class="flex-1 px-4 py-3 rounded-lg border border-slate-200 text-xs bg-slate-50">
-                    <button onclick="addFamilyMember()" class="px-4 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">Añadir</button>
+                    <input type="text" id="new-member-name" placeholder="Ej: Carlos, Sofía..." class="flex-1 px-4 py-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-brand bg-slate-50">
+                    <button onclick="addFamilyMember()" class="px-4 bg-brand hover:bg-brand-dark text-white rounded-lg text-xs font-bold">
+                        Añadir
+                    </button>
                 </div>
             </div>
+
+            <div class="flex items-center justify-around py-1.5 px-2 text-[8px] bg-white border border-slate-200 rounded-lg text-slate-600 font-semibold uppercase">
+                <span class="flex items-center"><span class="mr-1">☀️</span> Comida</span>
+                <span class="flex items-center"><span class="mr-1">🌙</span> Cena</span>
+                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-brand mr-1 inline-block"></span>🏠 En casa</span>
+                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-slate-300 mr-1 inline-block"></span>❌ Fuera</span>
+            </div>
+
             <div id="family-list-container" class="space-y-3.5"></div>
-        </section>
-
-        <!-- SECCIÓN 6: TICKETS -->
-        <section id="sec-tickets" class="space-y-5 hidden">
-            <div>
-                <h2 class="font-title font-extrabold text-lg text-black">Fotos de Tickets</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Recibos guardados</p>
-            </div>
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex flex-col items-center justify-center border-dashed border-2">
-                <label for="ticket-upload" class="cursor-pointer flex flex-col items-center space-y-2 w-full py-2">
-                    <span class="font-title font-bold text-xs text-slate-900 uppercase">Subir Foto de Ticket</span>
-                </label>
-                <input type="file" id="ticket-upload" accept="image/*" class="hidden" onchange="handleTicketUpload(event)">
-            </div>
-            <div id="tickets-gallery" class="grid grid-cols-2 gap-4"></div>
-            <div id="empty-tickets-msg" class="text-center py-8 text-slate-400 text-xs">Sin tickets guardados.</div>
-        </section>
-
-        <!-- SECCIÓN 7: NEVERA / PIZARRA -->
-        <section id="sec-planner" class="space-y-5 hidden">
-            <div>
-                <h2 class="font-title font-extrabold text-lg text-black">Pizarra de Menús</h2>
-                <p class="text-[10px] text-slate-500 mt-0.5">Notas semanales compartidas</p>
-            </div>
-            <div class="bg-slate-200 rounded-3xl p-4 space-y-4 border border-slate-300">
-                <div class="grid grid-cols-1 gap-3">
-                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
-                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Lunes</h3>
-                        <textarea oninput="savePlanner('lun', this.value)" id="plan-lun" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
-                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Martes</h3>
-                        <textarea oninput="savePlanner('mar', this.value)" id="plan-mar" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
-                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Miércoles</h3>
-                        <textarea oninput="savePlanner('mie', this.value)" id="plan-mie" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
-                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Jueves</h3>
-                        <textarea oninput="savePlanner('jue', this.value)" id="plan-jue" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
-                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Viernes</h3>
-                        <textarea oninput="savePlanner('vie', this.value)" id="plan-vie" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
-                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Sábado</h3>
-                        <textarea oninput="savePlanner('sab', this.value)" id="plan-sab" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-300">
-                        <h3 class="font-title font-bold text-xs uppercase text-slate-900 border-b pb-1">Domingo</h3>
-                        <textarea oninput="savePlanner('dom', this.value)" id="plan-dom" placeholder="Añadir comida..." class="w-full bg-transparent border-none focus:outline-none text-xs text-slate-800 mt-2 resize-none h-12"></textarea>
-                    </div>
-                </div>
-            </div>
         </section>
 
     </main>
 
-    <!-- MENÚ DE NAVEGACIÓN INFERIOR -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-brand text-brand-pale border-t border-brand-dark shadow-2xl z-40">
-        <div id="nav-container" class="flex overflow-x-auto scrollbar-none py-2 px-3 space-x-1.5 items-center max-w-md mx-auto">
-            <button onclick="switchTab('shopping')" id="nav-shopping" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl text-white bg-brand-dark text-xs font-title font-bold">Compra</button>
-            <button onclick="switchTab('alerts')" id="nav-alerts" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Despensa</button>
-            <button onclick="switchTab('tuppers')" id="nav-tuppers" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Tuppers</button>
-            <button onclick="switchTab('expiring')" id="nav-expiring" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">¡Consumir!</button>
-            <button onclick="switchTab('attendance')" id="nav-attendance" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Asistencia</button>
-            <button onclick="switchTab('tickets')" id="nav-tickets" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Tickets</button>
-            <button onclick="switchTab('planner')" id="nav-planner" class="flex-shrink-0 flex items-center space-x-1 py-2 px-3 rounded-xl hover:text-white text-xs font-title font-bold">Nevera</button>
+    <!-- BARRA INFERIOR -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-black text-slate-400 border-t border-slate-900 shadow-2xl z-40 pb-safe">
+        <div id="nav-container" class="grid grid-cols-5 max-w-md mx-auto py-1.5 px-1 items-center">
+            <button onclick="switchTab('planner')" id="nav-planner" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-white bg-brand-dark transition-all duration-200">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                <span class="text-[9px] font-title font-bold tracking-tight">Menú</span>
+            </button>
+
+            <button onclick="switchTab('shopping')" id="nav-shopping" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                <span class="text-[9px] font-title font-bold tracking-tight">Compra</span>
+            </button>
+
+            <button onclick="switchTab('alerts')" id="nav-alerts" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <span class="text-[9px] font-title font-bold tracking-tight">Caducidad</span>
+            </button>
+
+            <button onclick="switchTab('tuppers')" id="nav-tuppers" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-[9px] font-title font-bold tracking-tight">Tuppers</span>
+            </button>
+
+            <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="text-[9px] font-title font-bold tracking-tight">Asistencia</span>
+            </button>
         </div>
     </nav>
 
-    <!-- FIREBASE FIRESTORE SYNC LOGIC -->
+    <!-- FIREBASE FIRESTORE REAL-TIME SYNC LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBbtChg-D24co76iVJTPOXlk9B5-KKQiHY",
-            authDomain: "la-nevera-4809a.firebaseapp.com",
-            projectId: "la-nevera-4809a",
-            storageBucket: "la-nevera-4809a.firebasestorage.app",
-            messagingSenderId: "877238751366",
-            appId: "1:877238751366:web:cda233c10b26b6ffaf8107",
-            measurementId: "G-QQ6D7C06SF"
+            apiKey: "AIzaSyC4zVbZZi901BPs_H86zGJcWo1dPjuvQeI",
+            authDomain: "the-fridge-gd.firebaseapp.com",
+            projectId: "the-fridge-gd",
+            storageBucket: "the-fridge-gd.firebasestorage.app",
+            messagingSenderId: "811655614078",
+            appId: "1:811655614078:web:46e6ee29e2a05141a0522f",
+            measurementId: "G-7QYHRNR2BK"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -285,20 +382,27 @@
 
         window.STATE = {
             shoppingItems: [],
-            alertButtons: [
-                { id: 'a1', name: 'Leche', active: false },
-                { id: 'a2', name: 'Huevos', active: false },
-                { id: 'a3', name: 'Papel Higiénico', active: false },
-                { id: 'a4', name: 'Café molido', active: false }
-            ],
             expiringItems: [],
             tuppers: [],
             familyMembers: [
-                { id: 'f1', name: 'Papá', weeklyAttendance: { lun: true, mar: true, mie: true, jue: true, vie: true, sab: true, dom: true } },
-                { id: 'f2', name: 'Mamá', weeklyAttendance: { lun: true, mar: true, mie: true, jue: true, vie: true, sab: true, dom: true } }
+                { id: 'f1', name: 'Papá', weeklyAttendance: { lun: { comida: true, cena: true }, mar: { comida: true, cena: true }, mie: { comida: true, cena: true }, jue: { comida: true, cena: true }, vie: { comida: true, cena: true }, sab: { comida: true, cena: true }, dom: { comida: true, cena: true } } },
+                { id: 'f2', name: 'Mamá', weeklyAttendance: { lun: { comida: true, cena: true }, mar: { comida: true, cena: true }, mie: { comida: true, cena: true }, jue: { comida: true, cena: true }, vie: { comida: true, cena: true }, sab: { comida: true, cena: true }, dom: { comida: true, cena: true } } }
             ],
-            tickets: [],
-            planner: { lun: '', mar: '', mie: '', jue: '', vie: '', sab: '', dom: '' }
+            planner: {
+                lun: { comida: '', cena: '' },
+                mar: { comida: '', cena: '' },
+                mie: { comida: '', cena: '' },
+                jue: { comida: '', cena: '' },
+                vie: { comida: '', cena: '' }
+            }
+        };
+
+        window.persistData = async function() {
+            try {
+                await setDoc(familyDocRef, window.STATE);
+            } catch (error) {
+                console.error("Error al sincronizar con Firebase:", error);
+            }
         };
 
         onSnapshot(familyDocRef, (docSnap) => {
@@ -307,295 +411,339 @@
                 window.STATE = { ...window.STATE, ...cloudData };
                 renderAll();
             } else {
-                persistData();
+                window.persistData();
             }
         });
 
-        window.persistData = async function() {
-            try {
-                await setDoc(familyDocRef, window.STATE);
-            } catch (error) {
-                console.error("Error al sincronizar:", error);
-            }
-        };
-
         function renderAll() {
             renderShoppingList();
-            renderAlerts();
             renderExpiringList();
             renderTuppers();
             renderFamily();
-            renderTickets();
             loadPlanner();
         }
 
         window.switchTab = function(tabId) {
-            ['shopping', 'alerts', 'tuppers', 'expiring', 'attendance', 'tickets', 'planner'].forEach(id => {
-                document.getElementById(`sec-${id}`).classList.add('hidden');
+            const tabs = ['shopping', 'alerts', 'tuppers', 'attendance', 'planner'];
+            tabs.forEach(id => {
+                const sec = document.getElementById(`sec-${id}`);
                 const btn = document.getElementById(`nav-${id}`);
-                btn.classList.remove('text-white', 'bg-brand-dark');
-                btn.classList.add('text-brand-pale');
+                if (sec) sec.classList.add('hidden');
+                if (btn) {
+                    btn.classList.remove('text-white', 'bg-brand-dark');
+                    btn.classList.add('text-slate-400');
+                }
             });
-            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+
+            const activeSec = document.getElementById(`sec-${tabId}`);
             const activeNav = document.getElementById(`nav-${tabId}`);
-            activeNav.classList.remove('text-brand-pale');
-            activeNav.classList.add('text-white', 'bg-brand-dark');
-            activeNav.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            if (activeSec) activeSec.classList.remove('hidden');
+            if (activeNav) {
+                activeNav.classList.remove('text-slate-400');
+                activeNav.classList.add('text-white', 'bg-brand-dark');
+            }
         };
 
         window.escapeHtml = function(s) {
             return (s || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         };
 
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./firebase-messaging-sw.js')
+                .then(() => console.log('Service Worker listo'))
+                .catch(() => {});
+        }
+
+        let notificationsAllowed = false;
+        window.requestNotificationPermission = function(silent = false) {
+            if (!('Notification' in window)) {
+                if (!silent) showToast("Aviso", "Dispositivo no compatible con notificaciones.");
+                return;
+            }
+
+            Notification.requestPermission().then(permission => {
+                const dot = document.getElementById('bell-dot');
+                if (permission === 'granted') {
+                    notificationsAllowed = true;
+                    if (dot) dot.classList.remove('hidden');
+                    if (!silent) showToast("🔔 Activadas", "Avisos nativos listos.");
+                } else {
+                    notificationsAllowed = false;
+                    if (dot) dot.classList.add('hidden');
+                    if (!silent) showToast("Aviso", "Permiso denegado.");
+                }
+            });
+        };
+
+        let toastTimeout;
+        window.showToast = function(title, message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3500);
+        };
+
         // --- COMPRA ---
         window.renderShoppingList = function() {
             const container = document.getElementById('shopping-list-container');
+            if (!container) return;
             container.innerHTML = '';
-            if (!STATE.shoppingItems || STATE.shoppingItems.length === 0) {
+            if (!window.STATE.shoppingItems || window.STATE.shoppingItems.length === 0) {
                 container.innerHTML = `<div class="text-center py-6 bg-white rounded-xl border border-slate-200 text-xs text-slate-400">Sin compras pendientes.</div>`;
                 return;
             }
-            STATE.shoppingItems.forEach(item => {
+            window.STATE.shoppingItems.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 shadow-sm";
+                card.id = `shop-item-${item.id}`;
+                card.className = "flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 shadow-sm transition-all";
                 card.innerHTML = `
-                    <div class="flex items-center space-x-3.5 flex-1 cursor-pointer" onclick="deleteShoppingItem('${item.id}')">
-                        <div class="w-6 h-6 rounded-lg border-2 border-slate-300 bg-slate-50 flex items-center justify-center"></div>
+                    <div class="flex items-center space-x-3.5 flex-1 cursor-pointer mr-2" onclick="toggleItemCompleted('${item.id}')">
+                        <div class="w-6 h-6 rounded-lg border-2 border-slate-300 bg-slate-50 flex items-center justify-center flex-shrink-0"></div>
                         <div>
                             <span class="text-xs font-semibold text-black">${escapeHtml(item.name)}</span>
-                            ${item.note ? `<p class="text-[10px] text-slate-500">${escapeHtml(item.note)}</p>` : ''}
+                            ${item.note ? `<p class="text-[10px] text-slate-500 mt-0.5">${escapeHtml(item.note)}</p>` : ''}
                         </div>
                     </div>
-                    <button onclick="deleteShoppingItem('${item.id}')" class="text-slate-300 hover:text-slate-600">✕</button>
+                    <button onclick="deleteShoppingItem('${item.id}')" class="text-slate-300 hover:text-slate-600 p-1">✕</button>
                 `;
                 container.appendChild(card);
             });
         };
 
+        window.toggleItemCompleted = function(id) {
+            const card = document.getElementById(`shop-item-${id}`);
+            if (card) card.classList.add('opacity-40', 'scale-95');
+            setTimeout(() => window.deleteShoppingItem(id), 300);
+        };
+
         window.addManualProduct = function() {
-            const n = document.getElementById('new-product-name');
-            const note = document.getElementById('new-product-note');
-            if (!n.value.trim()) return;
-            STATE.shoppingItems.push({ id: Date.now().toString(), name: n.value.trim(), note: note.value.trim() || null, completed: false, alertId: null });
-            persistData();
-            n.value = ''; note.value = '';
+            const nameInput = document.getElementById('new-product-name');
+            const noteInput = document.getElementById('new-product-note');
+            const name = nameInput ? nameInput.value.trim() : '';
+            if (!name) return;
+            if (!window.STATE.shoppingItems) window.STATE.shoppingItems = [];
+            window.STATE.shoppingItems.push({ id: Date.now().toString(), name, note: noteInput?.value.trim() || null, completed: false, alertId: null });
+            window.persistData();
+            if (nameInput) nameInput.value = '';
+            if (noteInput) noteInput.value = '';
         };
 
         window.deleteShoppingItem = function(id) {
-            const item = STATE.shoppingItems.find(i => i.id === id);
-            if (item && item.alertId) {
-                const btn = STATE.alertButtons.find(b => b.id === item.alertId);
-                if (btn) btn.active = false;
-            }
-            STATE.shoppingItems = STATE.shoppingItems.filter(i => i.id !== id);
-            persistData();
-        };
-
-        // --- DESPENSA ---
-        window.renderAlerts = function() {
-            const grid = document.getElementById('alerts-grid');
-            grid.innerHTML = '';
-            (STATE.alertButtons || []).forEach(btn => {
-                const col = document.createElement('div');
-                col.className = "relative";
-                col.innerHTML = `
-                    <button onclick="toggleAlertState('${btn.id}')" class="w-full text-left p-4 rounded-xl border transition-all h-24 flex flex-col justify-between ${btn.active ? 'bg-black border-black text-white' : 'bg-white border-slate-200 text-slate-900'}">
-                        <span class="text-[9px] font-bold uppercase ${btn.active ? 'text-brand-light' : 'text-slate-400'}">${btn.active ? 'Agotándose' : 'En despensa'}</span>
-                        <p class="font-title font-bold text-xs uppercase">${escapeHtml(btn.name)}</p>
-                    </button>
-                    <button onclick="deleteAlertButton(event, '${btn.id}')" class="absolute top-2 right-2 p-1 text-slate-400">✕</button>
-                `;
-                grid.appendChild(col);
-            });
-        };
-
-        window.toggleAlertState = function(id) {
-            const btn = STATE.alertButtons.find(b => b.id === id);
-            if (!btn) return;
-            btn.active = !btn.active;
-            if (btn.active) {
-                if (!STATE.shoppingItems.some(i => i.alertId === id)) {
-                    STATE.shoppingItems.push({ id: 'item_' + id, name: btn.name, note: "Aviso despensa", completed: false, alertId: id });
-                }
-            } else {
-                STATE.shoppingItems = STATE.shoppingItems.filter(i => i.alertId !== id);
-            }
-            persistData();
-        };
-
-        window.addNewAlertButton = function() {
-            const input = document.getElementById('new-alert-name');
-            if (!input.value.trim()) return;
-            STATE.alertButtons.push({ id: 'btn_' + Date.now(), name: input.value.trim(), active: false });
-            persistData();
-            input.value = '';
-        };
-
-        window.deleteAlertButton = function(e, id) {
-            e.stopPropagation();
-            STATE.alertButtons = STATE.alertButtons.filter(b => b.id !== id);
-            STATE.shoppingItems = STATE.shoppingItems.filter(i => i.alertId !== id);
-            persistData();
+            window.STATE.shoppingItems = (window.STATE.shoppingItems || []).filter(i => i.id !== id);
+            window.persistData();
         };
 
         // --- TUPPERS ---
         window.renderTuppers = function() {
             const container = document.getElementById('tuppers-weeks-container');
+            if (!container) return;
             container.innerHTML = '';
             let unpaid = 0, paid = 0;
-            (STATE.tuppers || []).forEach(t => {
-                const total = t.qty * t.price;
+
+            (window.STATE.tuppers || []).forEach(t => {
+                const total = (t.qty || 1) * (t.price || 0);
                 if (t.collected) paid += total; else unpaid += total;
+
                 const row = document.createElement('div');
-                row.className = "flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white text-xs";
+                row.className = `flex items-center justify-between p-3 rounded-lg border text-xs bg-white border-slate-200 ${t.collected ? 'opacity-60' : ''}`;
                 row.innerHTML = `
                     <div>
                         <p class="font-bold uppercase ${t.collected ? 'line-through text-slate-400' : 'text-slate-900'}">${escapeHtml(t.name)}</p>
-                        <p class="text-[10px] text-slate-500">${t.qty} uds x ${t.price.toFixed(2)}€ = ${(t.qty * t.price).toFixed(2)}€</p>
+                        <p class="text-[10px] text-slate-500">${t.qty} uds x ${Number(t.price).toFixed(2)}€ = ${(t.qty * t.price).toFixed(2)}€ ${t.date ? `• 📅 ${t.date}` : ''}</p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button onclick="toggleTupper('${t.id}')" class="px-2 py-1 rounded text-[10px] font-bold ${t.collected ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}">
-                            ${t.collected ? 'Cobrado' : 'Pendiente'}
+                        <button onclick="toggleTupper('${t.id}')" class="px-2.5 py-1.5 rounded-lg text-[10px] font-bold ${t.collected ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}">
+                            ${t.collected ? '💵 Cobrado' : '⏳ Pendiente'}
                         </button>
-                        <button onclick="deleteTupper('${t.id}')" class="text-slate-300">✕</button>
+                        <button onclick="deleteTupper('${t.id}')" class="text-slate-300 hover:text-red-500 p-1">✕</button>
                     </div>
                 `;
                 container.appendChild(row);
             });
+
             document.getElementById('total-unpaid-tuppers').textContent = `${unpaid.toFixed(2)} €`;
             document.getElementById('total-paid-tuppers').textContent = `${paid.toFixed(2)} €`;
         };
 
         window.addTupper = function() {
-            const n = document.getElementById('tupper-name');
-            const q = parseInt(document.getElementById('tupper-quantity').value) || 1;
-            const p = parseFloat(document.getElementById('tupper-price').value) || 0;
-            if (!n.value.trim()) return;
-            STATE.tuppers.push({ id: 'tup_' + Date.now(), name: n.value.trim(), qty: q, price: p, collected: false });
-            persistData();
-            n.value = '';
+            const nameInput = document.getElementById('tupper-name');
+            const qtyInput = document.getElementById('tupper-quantity');
+            const priceInput = document.getElementById('tupper-price');
+            const name = nameInput ? nameInput.value.trim() : '';
+            if (!name) return;
+
+            const dateStr = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            if (!window.STATE.tuppers) window.STATE.tuppers = [];
+            window.STATE.tuppers.push({ id: 'tup_' + Date.now(), name, qty: parseInt(qtyInput?.value) || 1, price: parseFloat(priceInput?.value) || 0, date: dateStr, collected: false });
+            window.persistData();
+
+            if (nameInput) nameInput.value = '';
+            if (qtyInput) qtyInput.value = '1';
+            if (priceInput) priceInput.value = '4.00';
         };
 
         window.toggleTupper = function(id) {
-            const t = STATE.tuppers.find(x => x.id === id);
-            if (t) { t.collected = !t.collected; persistData(); }
+            const t = (window.STATE.tuppers || []).find(x => x.id === id);
+            if (t) { t.collected = !t.collected; window.persistData(); }
         };
 
         window.deleteTupper = function(id) {
-            STATE.tuppers = STATE.tuppers.filter(x => x.id !== id);
-            persistData();
+            window.STATE.tuppers = (window.STATE.tuppers || []).filter(x => x.id !== id);
+            window.persistData();
         };
 
-        // --- CONSUMIR ---
+        // --- CADUCIDAD ---
         window.renderExpiringList = function() {
-            const c = document.getElementById('expiring-list-container');
-            c.innerHTML = '';
-            (STATE.expiringItems || []).forEach(item => {
+            const container = document.getElementById('expiring-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const list = window.STATE.expiringItems || [];
+            if (list.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 bg-white rounded-xl border border-slate-200 text-xs text-slate-400">No hay comida en riesgo.</div>`;
+                return;
+            }
+
+            list.forEach(item => {
                 const el = document.createElement('div');
-                el.className = "p-3 rounded-xl border border-amber-200 bg-amber-50/40 flex justify-between items-center text-xs cursor-pointer";
-                el.onclick = () => { STATE.expiringItems = STATE.expiringItems.filter(x => x.id !== item.id); persistData(); };
-                el.innerHTML = `<div><span class="font-bold uppercase">${escapeHtml(item.name)}</span><p class="text-[10px] text-slate-500">${item.note}</p></div><span>🍴</span>`;
-                c.appendChild(el);
+                let badgeClass = 'border-accent/40 bg-accent/5 text-accent-dark font-semibold';
+                if (item.urgency === 'medium') badgeClass = 'border-amber-200 bg-amber-50/50 text-amber-800';
+                if (item.urgency === 'low') badgeClass = 'border-brand-light/40 bg-brand/5 text-brand-dark';
+
+                el.className = `p-3.5 rounded-xl border flex justify-between items-center text-xs cursor-pointer ${badgeClass}`;
+                el.onclick = () => window.consumeExpiringItem(item.id);
+                el.innerHTML = `<div><span class="font-bold uppercase tracking-wider text-slate-900">${escapeHtml(item.name)}</span><p class="text-[10px] text-slate-500 mt-0.5">${item.note}</p></div><span class="text-sm">🍴</span>`;
+                container.appendChild(el);
             });
         };
 
         window.addExpiringProduct = function() {
-            const n = document.getElementById('exp-product-name');
-            const u = document.querySelector('input[name="exp-urgency"]:checked')?.value || 'high';
-            if (!n.value.trim()) return;
-            STATE.expiringItems.push({ id: 'exp_' + Date.now(), name: n.value.trim(), note: u === 'high' ? 'Hoy' : (u === 'medium' ? 'Mañana' : 'Esta semana'), urgency: u });
-            persistData();
-            n.value = '';
+            const input = document.getElementById('exp-product-name');
+            const urgency = document.querySelector('input[name="exp-urgency"]:checked')?.value || 'high';
+            const name = input ? input.value.trim() : '';
+            if (!name) return;
+
+            let note = urgency === 'high' ? 'Hoy' : (urgency === 'medium' ? 'Mañana' : 'Esta semana');
+            if (!window.STATE.expiringItems) window.STATE.expiringItems = [];
+            window.STATE.expiringItems.push({ id: 'exp_' + Date.now(), name, note, urgency });
+            window.persistData();
+            if (input) input.value = '';
+        };
+
+        window.consumeExpiringItem = function(id) {
+            window.STATE.expiringItems = (window.STATE.expiringItems || []).filter(x => x.id !== id);
+            window.persistData();
         };
 
         // --- ASISTENCIA ---
         window.renderFamily = function() {
             const container = document.getElementById('family-list-container');
+            if (!container) return;
             container.innerHTML = '';
-            const days = [{ k: 'lun', l: 'L' }, { k: 'mar', l: 'M' }, { k: 'mie', l: 'X' }, { k: 'jue', l: 'J' }, { k: 'vie', l: 'V' }, { k: 'sab', l: 'S' }, { k: 'dom', l: 'D' }];
-            (STATE.familyMembers || []).forEach(m => {
+            const days = [{ k: 'lun', l: 'Lun' }, { k: 'mar', l: 'Mar' }, { k: 'mie', l: 'Mié' }, { k: 'jue', l: 'Jue' }, { k: 'vie', l: 'Vie' }, { k: 'sab', l: 'Sáb' }, { k: 'dom', l: 'Dom' }];
+
+            (window.STATE.familyMembers || []).forEach(m => {
                 const card = document.createElement('div');
-                card.className = "p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-3";
-                let daysHtml = days.map(d => `
-                    <button onclick="toggleWeeklyDay('${m.id}', '${d.k}')" class="py-2 px-1 rounded-lg border text-center ${m.weeklyAttendance[d.k] ? 'bg-brand border-brand text-white font-bold' : 'bg-slate-100 text-slate-400 line-through'}">
-                        <span class="text-[10px] block">${d.l}</span>
-                        <span class="text-xs">${m.weeklyAttendance[d.k] ? '🏠' : '❌'}</span>
-                    </button>
-                `).join('');
+                card.className = "p-3.5 bg-white rounded-xl border border-slate-200 shadow-sm space-y-2.5";
+                
+                let daysHtml = days.map(d => {
+                    let dayObj = m.weeklyAttendance ? m.weeklyAttendance[d.k] : null;
+                    let comidaIn = true, cenaIn = true;
+                    if (typeof dayObj === 'boolean') { comidaIn = dayObj; cenaIn = dayObj; }
+                    else if (typeof dayObj === 'object' && dayObj !== null) { comidaIn = dayObj.comida !== false; cenaIn = dayObj.cena !== false; }
+
+                    return `
+                        <div class="flex flex-col items-center bg-slate-50 border border-slate-200 rounded-lg p-1 space-y-1">
+                            <span class="text-[9px] font-bold uppercase text-slate-700 leading-none">${d.l}</span>
+                            <button onclick="toggleWeeklyDayMeal('${m.id}', '${d.k}', 'comida')" class="w-full py-1 rounded text-center transition-all flex items-center justify-center space-x-0.5 ${comidaIn ? 'bg-brand text-white font-bold' : 'bg-slate-200 text-slate-400 line-through'}">
+                                <span class="text-[8px]">☀️</span>
+                                <span class="text-[8px] font-bold">${comidaIn ? '🏠' : '❌'}</span>
+                            </button>
+                            <button onclick="toggleWeeklyDayMeal('${m.id}', '${d.k}', 'cena')" class="w-full py-1 rounded text-center transition-all flex items-center justify-center space-x-0.5 ${cenaIn ? 'bg-slate-900 text-white font-bold' : 'bg-slate-200 text-slate-400 line-through'}">
+                                <span class="text-[8px]">🌙</span>
+                                <span class="text-[8px] font-bold">${cenaIn ? '🏠' : '❌'}</span>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+
                 card.innerHTML = `
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold uppercase">${escapeHtml(m.name)}</span>
-                        <button onclick="deleteFamilyMember('${m.id}')" class="text-slate-300">✕</button>
+                        <span class="text-xs font-bold uppercase text-slate-900 tracking-wider">${escapeHtml(m.name)}</span>
+                        <button onclick="deleteFamilyMember('${m.id}')" class="text-slate-300 hover:text-slate-600 p-1">✕</button>
                     </div>
-                    <div class="grid grid-cols-7 gap-1.5">${daysHtml}</div>
+                    <div class="grid grid-cols-7 gap-1">${daysHtml}</div>
                 `;
                 container.appendChild(card);
             });
         };
 
         window.addFamilyMember = function() {
-            const n = document.getElementById('new-member-name');
-            if (!n.value.trim()) return;
-            STATE.familyMembers.push({ id: 'fam_' + Date.now(), name: n.value.trim(), weeklyAttendance: { lun: true, mar: true, mie: true, jue: true, vie: true, sab: true, dom: true } });
-            persistData();
-            n.value = '';
+            const input = document.getElementById('new-member-name');
+            const name = input ? input.value.trim() : '';
+            if (!name) return;
+            if (!window.STATE.familyMembers) window.STATE.familyMembers = [];
+            window.STATE.familyMembers.push({
+                id: 'fam_' + Date.now(),
+                name,
+                weeklyAttendance: { lun: { comida: true, cena: true }, mar: { comida: true, cena: true }, mie: { comida: true, cena: true }, jue: { comida: true, cena: true }, vie: { comida: true, cena: true }, sab: { comida: true, cena: true }, dom: { comida: true, cena: true } }
+            });
+            window.persistData();
+            if (input) input.value = '';
         };
 
-        window.toggleWeeklyDay = function(id, d) {
-            const m = STATE.familyMembers.find(f => f.id === id);
-            if (m) { m.weeklyAttendance[d] = !m.weeklyAttendance[d]; persistData(); }
+        window.toggleWeeklyDayMeal = function(id, dayKey, mealType) {
+            const m = (window.STATE.familyMembers || []).find(f => f.id === id);
+            if (m) {
+                if (!m.weeklyAttendance) m.weeklyAttendance = {};
+                let dayObj = m.weeklyAttendance[dayKey];
+                if (typeof dayObj !== 'object' || dayObj === null) {
+                    let defaultVal = typeof dayObj === 'boolean' ? dayObj : true;
+                    dayObj = { comida: defaultVal, cena: defaultVal };
+                }
+                dayObj[mealType] = !dayObj[mealType];
+                m.weeklyAttendance[dayKey] = dayObj;
+                window.persistData();
+            }
         };
 
         window.deleteFamilyMember = function(id) {
-            STATE.familyMembers = STATE.familyMembers.filter(f => f.id !== id);
-            persistData();
+            window.STATE.familyMembers = (window.STATE.familyMembers || []).filter(f => f.id !== id);
+            window.persistData();
         };
 
         window.resetAttendanceWeek = function() {
-            STATE.familyMembers.forEach(m => { m.weeklyAttendance = { lun: true, mar: true, mie: true, jue: true, vie: true, sab: true, dom: true }; });
-            persistData();
+            (window.STATE.familyMembers || []).forEach(m => {
+                m.weeklyAttendance = { lun: { comida: true, cena: true }, mar: { comida: true, cena: true }, mie: { comida: true, cena: true }, jue: { comida: true, cena: true }, vie: { comida: true, cena: true }, sab: { comida: true, cena: true }, dom: { comida: true, cena: true } };
+            });
+            window.persistData();
         };
 
-        // --- PIZARRA Y TICKETS ---
+        // --- MENÚS ---
         window.loadPlanner = function() {
-            ['lun', 'mar', 'mie', 'jue', 'vie', 'sab', 'dom'].forEach(d => {
-                const el = document.getElementById(`plan-${d}`);
-                if (el && STATE.planner) el.value = STATE.planner[d] || '';
+            const days = ['lun', 'mar', 'mie', 'jue', 'vie'];
+            days.forEach(d => {
+                const elComida = document.getElementById(`plan-${d}-comida`);
+                const elCena = document.getElementById(`plan-${d}-cena`);
+                const dayData = window.STATE.planner ? window.STATE.planner[d] : null;
+
+                if (elComida) elComida.value = (typeof dayData === 'object' && dayData !== null) ? (dayData.comida || '') : (typeof dayData === 'string' ? dayData : '');
+                if (elCena) elCena.value = (typeof dayData === 'object' && dayData !== null) ? (dayData.cena || '') : '';
             });
         };
 
-        window.savePlanner = function(day, text) {
-            if (!STATE.planner) STATE.planner = {};
-            STATE.planner[day] = text;
-            persistData();
-        };
-
-        window.renderTickets = function() {
-            const g = document.getElementById('tickets-gallery');
-            g.innerHTML = '';
-            (STATE.tickets || []).forEach(t => {
-                const div = document.createElement('div');
-                div.className = "bg-white p-2 rounded-xl border border-slate-200";
-                div.innerHTML = `<img src="${t.image}" class="aspect-square object-cover rounded-lg w-full mb-1"><button onclick="deleteTicket('${t.id}')" class="text-[10px] text-red-500 w-full text-center">Borrar</button>`;
-                g.appendChild(div);
-            });
-            document.getElementById('empty-tickets-msg').classList.toggle('hidden', (STATE.tickets || []).length > 0);
-        };
-
-        window.handleTicketUpload = function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                STATE.tickets.unshift({ id: Date.now().toString(), image: e.target.result });
-                persistData();
-            };
-            reader.readAsDataURL(file);
-        };
-
-        window.deleteTicket = function(id) {
-            STATE.tickets = STATE.tickets.filter(x => x.id !== id);
-            persistData();
+        window.savePlanner = function(day, mealType, text) {
+            if (!window.STATE.planner) window.STATE.planner = {};
+            if (typeof window.STATE.planner[day] !== 'object' || window.STATE.planner[day] === null) {
+                window.STATE.planner[day] = { comida: '', cena: '' };
+            }
+            window.STATE.planner[day][mealType] = text;
+            window.persistData();
         };
     </script>
 </body>
