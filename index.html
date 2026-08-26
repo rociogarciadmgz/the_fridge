@@ -63,6 +63,7 @@
                 </div>
             </div>
             
+            <!-- CAMPANITA CON RECORDATORIO AUTOMÁTICO DE ESTADO -->
             <button id="notification-bell" onclick="requestNotificationPermission()" class="relative flex items-center justify-center p-2.5 rounded-2xl bg-slate-800 border border-slate-700 hover:bg-slate-700 text-brand-light transition-all active:scale-95 shadow-md">
                 <span id="bell-dot" class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-brand rounded-full border-2 border-black hidden animate-pulse"></span>
                 <svg class="w-6 h-6 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -365,13 +366,29 @@
         const db = getFirestore(app);
         const familyDocRef = doc(db, "hogar", "datos_compartidos");
 
-        // Registrar Service Worker al inicio
         let swRegistration = null;
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./firebase-messaging-sw.js')
-                .then(reg => { swRegistration = reg; })
+                .then(reg => { 
+                    swRegistration = reg;
+                    checkNotificationStatus();
+                })
                 .catch(() => {});
         }
+
+        // Comprobador de estado al abrir la app
+        function checkNotificationStatus() {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const dot = document.getElementById('bell-dot');
+                const bellBtn = document.getElementById('notification-bell');
+                if (dot) dot.classList.remove('hidden');
+                if (bellBtn) {
+                    bellBtn.classList.add('bg-brand/20', 'border-brand', 'text-brand');
+                    bellBtn.classList.remove('bg-slate-800', 'border-slate-700', 'text-brand-light');
+                }
+            }
+        }
+        window.addEventListener('DOMContentLoaded', checkNotificationStatus);
 
         let myDeviceId = localStorage.getItem('the_fridge_device_id');
         if (!myDeviceId) {
@@ -447,7 +464,7 @@
 
         function triggerSystemPush(body) {
             showToast("The Fridge", body);
-            if (Notification.permission === 'granted') {
+            if ('Notification' in window && Notification.permission === 'granted') {
                 if (swRegistration && swRegistration.showNotification) {
                     swRegistration.showNotification("The Fridge", {
                         body: body,
@@ -468,24 +485,16 @@
 
         window.requestNotificationPermission = async function() {
             if (!('Notification' in window)) {
-                showToast("Aviso", "Añade la app a la pantalla de inicio primero.");
+                showToast("Aviso", "Añade la app a la pantalla de inicio.");
                 return;
             }
 
             try {
                 const permission = await Notification.requestPermission();
-                const dot = document.getElementById('bell-dot');
-                const bellBtn = document.getElementById('notification-bell');
-
                 if (permission === 'granted') {
-                    if (dot) dot.classList.remove('hidden');
-                    if (bellBtn) {
-                        bellBtn.classList.add('bg-brand/20', 'border-brand', 'text-brand');
-                        bellBtn.classList.remove('bg-slate-800', 'border-slate-700', 'text-brand-light');
-                    }
-                    showToast("🔔 Activadas", "Avisos activados para este dispositivo.");
+                    checkNotificationStatus();
+                    showToast("🔔 Activadas", "Avisos activados en este teléfono.");
                 } else {
-                    if (dot) dot.classList.add('hidden');
                     showToast("Aviso", "Permiso de notificaciones denegado.");
                 }
             } catch (err) {
