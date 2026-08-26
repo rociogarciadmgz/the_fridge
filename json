@@ -1,20 +1,16 @@
 {
-  "name": "Lista Familiar",
-  "short_name": "Familiar",
+  "name": "The Fridge - Familia García Domínguez",
+  "short_name": "The Fridge",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#6695ff",
+  "background_color": "#5b8aff",
+  "theme_color": "#5b8aff",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3737/3737372.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://cdn-icons-png.flaticon.com/512/3737/3737372.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
