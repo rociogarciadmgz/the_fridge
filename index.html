@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- Configuración PWA e Iconos -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,12 +12,10 @@
     <meta name="theme-color" content="#000000">
     <title>The Fridge - Familia García Domínguez</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -57,7 +53,6 @@
 </head>
 <body class="h-full font-sans antialiased text-slate-900 flex flex-col no-select bg-slate-50">
 
-    <!-- CABECERA DE LA APP CON CAMPANITA DESTACADA -->
     <header class="bg-black text-white shadow-md sticky top-0 z-40 border-b border-slate-900">
         <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -68,7 +63,6 @@
                 </div>
             </div>
             
-            <!-- BOTÓN CAMPANITA CON ALTO CONTRASTE -->
             <button id="notification-bell" onclick="requestNotificationPermission()" class="relative flex items-center justify-center p-2.5 rounded-2xl bg-slate-800 border border-slate-700 hover:bg-slate-700 text-brand-light transition-all active:scale-95 shadow-md">
                 <span id="bell-dot" class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-brand rounded-full border-2 border-black hidden animate-pulse"></span>
                 <svg class="w-6 h-6 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +72,6 @@
         </div>
     </header>
 
-    <!-- TOAST DE NOTIFICACIONES INTERNAS -->
     <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-sm bg-black text-white rounded-xl p-4 shadow-2xl flex items-start space-x-3 transition-all duration-300 translate-y-[-150%] opacity-0 pointer-events-none border border-slate-800">
         <div class="bg-brand text-white p-2 rounded-lg mt-0.5 text-base" id="toast-icon">🔔</div>
         <div class="flex-1">
@@ -88,10 +81,9 @@
         <button onclick="hideToast()" class="text-slate-400 hover:text-white p-1">✕</button>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 overflow-y-auto pb-24 max-w-md w-full mx-auto px-4 pt-5">
         
-        <!-- SECCIÓN 1: MENÚ SEMANAL -->
+        <!-- SECCIÓN 1: MENÚ -->
         <section id="sec-planner" class="space-y-3">
             <div class="flex items-center space-x-3 pb-3 border-b border-slate-200">
                 <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
@@ -105,8 +97,6 @@
 
             <div class="bg-slate-200 rounded-2xl p-2.5 shadow-inner border border-slate-300 relative overflow-hidden">
                 <div class="grid grid-cols-2 gap-2 relative z-10">
-                    
-                    <!-- LUNES -->
                     <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1">
                         <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
                         <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-0.5 text-center">Lunes</h3>
@@ -120,7 +110,6 @@
                         </div>
                     </div>
 
-                    <!-- MARTES -->
                     <div class="bg-brand/5 rounded-xl p-2 shadow-sm border border-brand/20 relative pt-4 space-y-1">
                         <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
                         <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-brand-dark border-b border-brand-light/40 pb-0.5 text-center">Martes</h3>
@@ -134,7 +123,6 @@
                         </div>
                     </div>
 
-                    <!-- MIÉRCOLES -->
                     <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1">
                         <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
                         <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-0.5 text-center">Miércoles</h3>
@@ -148,7 +136,6 @@
                         </div>
                     </div>
 
-                    <!-- JUEVES -->
                     <div class="bg-brand/5 rounded-xl p-2 shadow-sm border border-brand/20 relative pt-4 space-y-1">
                         <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
                         <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-brand-dark border-b border-brand-light/40 pb-0.5 text-center">Jueves</h3>
@@ -162,7 +149,6 @@
                         </div>
                     </div>
 
-                    <!-- VIERNES -->
                     <div class="bg-slate-50 rounded-xl p-2 shadow-sm border border-slate-300 relative pt-4 space-y-1 col-span-2">
                         <div class="absolute top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rounded-full shadow-sm flex items-center justify-center text-[5px] text-slate-400 font-bold">●</div>
                         <h3 class="font-title font-bold text-[10px] tracking-wider uppercase text-slate-900 border-b border-slate-200 pb-0.5 text-center">Viernes</h3>
@@ -177,12 +163,11 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
 
-        <!-- SECCIÓN 2: LISTA DE LA COMPRA -->
+        <!-- SECCIÓN 2: COMPRA -->
         <section id="sec-shopping" class="space-y-5 hidden">
             <div class="flex items-center space-x-3 pb-3 border-b border-slate-200">
                 <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
@@ -208,7 +193,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 3: CONSUMIR PRONTO -->
+        <!-- SECCIÓN 3: CADUCIDAD -->
         <section id="sec-alerts" class="space-y-5 hidden">
             <div class="flex items-center space-x-3 pb-3 border-b border-slate-200">
                 <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
@@ -249,7 +234,7 @@
             <div id="expiring-list-container" class="space-y-2.5"></div>
         </section>
 
-        <!-- SECCIÓN 4: CONTROL DE TUPPERS -->
+        <!-- SECCIÓN 4: TUPPERS -->
         <section id="sec-tuppers" class="space-y-5 hidden">
             <div class="flex items-center space-x-3 pb-3 border-b border-slate-200">
                 <div class="bg-brand p-2.5 rounded-xl text-white shadow-sm">
@@ -297,7 +282,7 @@
             <div id="tuppers-weeks-container" class="space-y-2"></div>
         </section>
 
-        <!-- SECCIÓN 5: ASISTENCIA FAMILIAR -->
+        <!-- SECCIÓN 5: ASISTENCIA -->
         <section id="sec-attendance" class="space-y-5 hidden">
             <div class="flex items-center justify-between pb-3 border-b border-slate-200">
                 <div class="flex items-center space-x-3">
@@ -336,49 +321,32 @@
 
     </main>
 
-    <!-- MENÚ INFERIOR -->
     <nav class="fixed bottom-0 left-0 right-0 bg-black text-slate-400 border-t border-slate-900 shadow-2xl z-40 pb-safe">
         <div id="nav-container" class="grid grid-cols-5 max-w-md mx-auto py-1.5 px-1 items-center">
-            
             <button onclick="switchTab('planner')" id="nav-planner" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-white bg-brand-dark transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                </svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Menú</span>
             </button>
-
             <button onclick="switchTab('shopping')" id="nav-shopping" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                </svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Compra</span>
             </button>
-
             <button onclick="switchTab('alerts')" id="nav-alerts" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                </svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Caducidad</span>
             </button>
-
             <button onclick="switchTab('tuppers')" id="nav-tuppers" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Tuppers</span>
             </button>
-
             <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl hover:text-white transition-all duration-200">
-                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 <span class="text-[9px] font-title font-bold tracking-tight">Asistencia</span>
             </button>
-
         </div>
     </nav>
 
-    <!-- MOTOR BLINDADO DE FIREBASE FIRESTORE -->
+    <!-- FIREBASE FIRESTORE MULTI-DEVICE SYNC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -396,6 +364,13 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const familyDocRef = doc(db, "hogar", "datos_compartidos");
+
+        // Identificador único de este dispositivo
+        let myDeviceId = localStorage.getItem('the_fridge_device_id');
+        if (!myDeviceId) {
+            myDeviceId = 'dev_' + Math.random().toString(36).substring(2, 9);
+            localStorage.setItem('the_fridge_device_id', myDeviceId);
+        }
 
         window.STATE = {
             shoppingItems: [],
@@ -415,41 +390,46 @@
         };
 
         let isInitialLoad = true;
-        let lastAlertTimestamp = 0;
+        let lastHandledAlertTime = 0;
 
-        // Persistencia directa e infalible
         window.persistData = async function(notificationMessage = null) {
             try {
                 if (notificationMessage) {
-                    window.STATE.lastAlert = { text: notificationMessage, time: Date.now() };
+                    window.STATE.lastAlert = {
+                        text: notificationMessage,
+                        sender: myDeviceId,
+                        time: Date.now()
+                    };
                 }
                 await setDoc(familyDocRef, window.STATE);
             } catch (error) {
-                console.error("Error al guardar en Firestore:", error);
-                showToast("Error", "Revisa la conexión o las reglas de Firebase.");
+                console.error("Error al guardar:", error);
             }
         };
 
-        // Escucha en tiempo real
+        // Escuchar actualizaciones de la familia en tiempo real
         onSnapshot(familyDocRef, (docSnap) => {
             if (docSnap.exists()) {
                 const cloudData = docSnap.data();
-                
-                // Si otro móvil hace un cambio con aviso
-                if (!isInitialLoad && cloudData.lastAlert && cloudData.lastAlert.time > lastAlertTimestamp) {
-                    lastAlertTimestamp = cloudData.lastAlert.time;
-                    triggerLocalAlert(cloudData.lastAlert.text);
+
+                // Notificar SOLO si el cambio lo hizo otro móvil
+                if (!isInitialLoad && cloudData.lastAlert) {
+                    const isNewAlert = cloudData.lastAlert.time > lastHandledAlertTime;
+                    const fromOtherDevice = cloudData.lastAlert.sender !== myDeviceId;
+
+                    if (isNewAlert && fromOtherDevice) {
+                        lastHandledAlertTime = cloudData.lastAlert.time;
+                        triggerSystemPush(cloudData.lastAlert.text);
+                    }
                 }
 
                 window.STATE = { ...window.STATE, ...cloudData };
-                if (cloudData.lastAlert) lastAlertTimestamp = cloudData.lastAlert.time;
+                if (cloudData.lastAlert) lastHandledAlertTime = cloudData.lastAlert.time;
                 isInitialLoad = false;
                 renderAll();
             } else {
                 window.persistData();
             }
-        }, (error) => {
-            console.error("Error escuchando datos:", error);
         });
 
         function renderAll() {
@@ -460,22 +440,22 @@
             loadPlanner();
         }
 
-        function triggerLocalAlert(body) {
+        function triggerSystemPush(body) {
             showToast("The Fridge", body);
             if (Notification.permission === 'granted') {
                 try {
                     new Notification("The Fridge", {
                         body: body,
-                        icon: 'logo.png'
+                        icon: 'logo.png',
+                        badge: 'logo.png'
                     });
                 } catch(e) {}
             }
         }
 
-        // Campanita de notificaciones
         window.requestNotificationPermission = async function() {
             if (!('Notification' in window)) {
-                showToast("Aviso", "Navegador no compatible.");
+                showToast("Aviso", "Añade la web a la pantalla de inicio.");
                 return;
             }
 
@@ -490,7 +470,7 @@
                         bellBtn.classList.add('bg-brand/20', 'border-brand', 'text-brand');
                         bellBtn.classList.remove('bg-slate-800', 'border-slate-700', 'text-brand-light');
                     }
-                    showToast("🔔 Activadas", "Avisos locales activados.");
+                    showToast("🔔 Activadas", "Recibirás avisos cuando otros cambien cosas.");
                 } else {
                     if (dot) dot.classList.add('hidden');
                     showToast("Aviso", "Permiso denegado.");
@@ -528,20 +508,14 @@
         let toastTimeout;
         window.showToast = function(title, message) {
             const toast = document.getElementById('toast');
-            const tTitle = document.getElementById('toast-title');
-            const tMsg = document.getElementById('toast-message');
-
-            if (tTitle) tTitle.textContent = title;
-            if (tMsg) tMsg.textContent = message;
-
-            if (toast) {
-                toast.classList.remove('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
-                toast.classList.add('translate-y-0', 'opacity-100');
-            }
-
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
-                window.hideToast();
+                toast.classList.add('translate-y-[-150%]', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('translate-y-0', 'opacity-100');
             }, 3500);
         };
 
